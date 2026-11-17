@@ -1,0 +1,2918 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PASAR PINTAR - Petualangan Belajar Harga dan Pasar</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome untuk Ikon Edukasi & Ekonomi -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <!-- Google Fonts: Fredoka & Nunito -->
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Nunito', 'sans-serif'],
+            display: ['Fredoka', 'sans-serif'],
+          },
+          colors: {
+            brandOrange: {
+              50: '#fff7ed',
+              100: '#ffedd5',
+              400: '#fb923c',
+              500: '#f97316',
+              600: '#ea580c',
+              700: '#c2410c',
+            },
+            brandYellow: {
+              100: '#fef9c3',
+              300: '#fde047',
+              400: '#facc15',
+              500: '#eab308',
+            },
+            brandBlue: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              400: '#38bdf8',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              900: '#0c4a6e',
+            },
+            brandGreen: {
+              50: '#f0fdf4',
+              100: '#dcfce7',
+              500: '#22c55e',
+              600: '#16a34a',
+              700: '#15803d',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: linear-gradient(135deg, #ffedd5 0%, #fef9c3 35%, #e0f2fe 75%, #dcfce7 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, .font-display {
+      font-family: 'Fredoka', sans-serif;
+    }
+
+    /* Animasi Mengambang Robot PIKO */
+    @keyframes floatPiko {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-10px) rotate(-2deg); }
+    }
+    .animate-piko {
+      animation: floatPiko 3.2s ease-in-out infinite;
+    }
+
+    /* Animasi Transaksi Jual Beli (Koin / Keranjang) */
+    @keyframes bounceCoin {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-6px) scale(1.08); }
+    }
+    .animate-coin {
+      animation: bounceCoin 2s ease-in-out infinite;
+    }
+
+    /* Animasi Transisi Halaman */
+    @keyframes pageEnter {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .page-transition {
+      animation: pageEnter 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    /* Tombol 3D Interaktif */
+    .btn-3d {
+      transition: all 0.14s ease;
+      box-shadow: 0 5px 0 rgba(0, 0, 0, 0.18);
+    }
+    .btn-3d:active {
+      transform: translateY(4px);
+      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.18);
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: #ffedd5; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb { background: #f97316; border-radius: 10px; }
+
+    /* Print Mode untuk LKPD, Praktikum & Sertifikat */
+    @media print {
+      body { background: white !important; }
+      .no-print { display: none !important; }
+      .shadow-xl, .shadow-lg, .shadow-md { box-shadow: none !important; border: 1px solid #cbd5e1 !important; }
+    }
+  </style>
+</head>
+<body class="text-slate-800 antialiased selection:bg-brandYellow-300 selection:text-brandOrange-700">
+
+  <!-- LOADING SCREEN -->
+  <div id="loading-screen" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-gradient-to-br from-brandOrange-500 via-brandYellow-400 to-brandBlue-500 text-white transition-opacity duration-500">
+    <div class="w-24 h-24 mb-3 animate-bounce">
+      <svg viewBox="0 0 120 120" class="w-full h-full drop-shadow-xl">
+        <circle cx="60" cy="60" r="50" fill="#ffffff" />
+        <rect x="28" y="36" width="64" height="46" rx="18" fill="#f97316" />
+        <circle cx="46" cy="56" r="7" fill="#fde047" />
+        <circle cx="74" cy="56" r="7" fill="#fde047" />
+        <path d="M 46 70 Q 60 80 74 70" stroke="#ffffff" stroke-width="4" fill="none" stroke-linecap="round" />
+        <line x1="60" y1="16" x2="60" y2="36" stroke="#0284c7" stroke-width="5" stroke-linecap="round" />
+        <circle cx="60" cy="14" r="7" fill="#22c55e" />
+      </svg>
+    </div>
+    <h2 class="text-2xl font-display font-bold tracking-wide drop-shadow">MEMBUKA PASAR PINTAR...</h2>
+    <p class="text-sm font-semibold text-white/90 mt-1">Menyiapkan Lapak Simulasi Harga & Pasar Bersama PIKO</p>
+  </div>
+
+  <!-- TOAST NOTIFICATION (PENGGANTI ALERT) -->
+  <div id="toast-container" class="fixed top-4 right-4 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none px-4 sm:px-0"></div>
+
+  <!-- MODAL PETUNJUK PENGGUNAAN MPI -->
+  <div id="guide-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 no-print">
+    <div class="bg-white rounded-3xl max-w-2xl w-full p-6 md:p-8 shadow-2xl border-4 border-brandOrange-400 max-h-[90vh] overflow-y-auto page-transition">
+      <div class="flex items-center justify-between border-b-2 border-slate-100 pb-4 mb-4">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-2xl bg-brandOrange-500 text-white flex items-center justify-center text-2xl shadow">
+            <i class="fa-solid fa-store"></i>
+          </div>
+          <div>
+            <h3 class="text-xl md:text-2xl font-display font-bold text-brandOrange-700">Petunjuk Penggunaan PASAR PINTAR</h3>
+            <p class="text-xs md:text-sm text-slate-500">Panduan belajar ekonomi bersama Robot PIKO</p>
+          </div>
+        </div>
+        <button onclick="toggleGuideModal(false)" class="w-10 h-10 rounded-full bg-slate-100 hover:bg-red-100 text-slate-600 hover:text-red-600 flex items-center justify-center transition">
+          <i class="fa-solid fa-xmark text-xl"></i>
+        </button>
+      </div>
+      <div class="space-y-3.5 text-sm md:text-base text-slate-700">
+        <div class="p-4 rounded-2xl bg-brandOrange-50 border border-brandOrange-200 flex gap-3">
+          <i class="fa-solid fa-volume-high text-brandOrange-600 text-xl mt-1"></i>
+          <div>
+            <h4 class="font-bold text-brandOrange-700">1. Fitur Suara PIKO & Efek Transaksi</h4>
+            <p class="text-sm">Gunakan tombol <strong>Play, Pause, Stop</strong>, pengaturan volume, dan tombol <strong>Musik</strong> di bilah atas untuk mendengarkan narasi penjelasan materi, simulasi, dan praktikum dalam Bahasa Indonesia.</p>
+          </div>
+        </div>
+        <div class="p-4 rounded-2xl bg-brandBlue-50 border border-brandBlue-200 flex gap-3">
+          <i class="fa-solid fa-chart-line text-brandBlue-600 text-xl mt-1"></i>
+          <div>
+            <h4 class="font-bold text-brandBlue-900">2. Simulasi Kurva Permintaan, Penawaran & Keseimbangan</h4>
+            <p class="text-sm">Geser slider harga pada menu <strong>Simulasi</strong> untuk melihat pergerakan kurva permintaan, penawaran, titik keseimbangan (equilibrium), surplus, dan kelangkaan secara langsung.</p>
+          </div>
+        </div>
+        <div class="p-4 rounded-2xl bg-brandGreen-50 border border-brandGreen-200 flex gap-3">
+          <i class="fa-solid fa-award text-brandGreen-600 text-xl mt-1"></i>
+          <div>
+            <h4 class="font-bold text-brandGreen-700">3. LKPD Kelompok, Praktikum Mini Market & Evaluasi 30 Soal</h4>
+            <p class="text-sm">Progresmu tersimpan otomatis di perangkat. Kerjakan Evaluasi 30 soal dan raih nilai minimal 80 untuk mendapatkan <strong>Sertifikat Konsumen & Ekonom Cerdas</strong>!</p>
+          </div>
+        </div>
+      </div>
+      <div class="mt-6 text-right">
+        <button onclick="toggleGuideModal(false)" class="btn-3d px-6 py-3 rounded-2xl bg-brandOrange-500 hover:bg-brandOrange-600 text-white font-bold">
+          Mulai Belajar! <i class="fa-solid fa-circle-play ml-2"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- HALAMAN PEMBUKA (SPLASH SCREEN) -->
+  <!-- ===================================================================== -->
+  <section id="welcome-screen" class="min-h-screen flex flex-col justify-between p-4 md:p-8 relative overflow-hidden">
+    <!-- Dekorasi Koin & Ikon Ekonomi Melayang -->
+    <div class="absolute top-12 left-8 text-brandYellow-500/40 text-5xl pointer-events-none animate-coin"><i class="fa-solid fa-coins"></i></div>
+    <div class="absolute bottom-20 right-10 text-brandBlue-500/30 text-6xl pointer-events-none animate-pulse"><i class="fa-solid fa-cart-shopping"></i></div>
+
+    <!-- Header Identitas Sekolah -->
+    <header class="max-w-6xl mx-auto w-full flex flex-wrap items-center justify-between gap-3 bg-white/90 backdrop-blur-md px-5 py-3 rounded-3xl shadow-md border-2 border-white z-10">
+      <div class="flex items-center gap-3">
+        <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-brandOrange-500 to-brandYellow-400 text-white flex items-center justify-center text-xl font-bold shadow">
+          <i class="fa-solid fa-shop"></i>
+        </div>
+        <div>
+          <span class="text-xs font-extrabold uppercase tracking-wider text-brandOrange-600 block">Media Pembelajaran Interaktif • IPS Kelas VII Fase D</span>
+          <span class="text-sm font-bold text-slate-700">UPTD SMP Negeri 2 Kalianda</span>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <button onclick="toggleGuideModal(true)" class="px-4 py-2 rounded-xl bg-brandYellow-300 hover:bg-brandYellow-400 text-slate-900 font-bold text-sm transition flex items-center gap-2 shadow-sm">
+          <i class="fa-solid fa-circle-question"></i> <span class="hidden sm:inline">Petunjuk</span>
+        </button>
+        <button onclick="toggleBGM()" class="px-4 py-2 rounded-xl bg-brandBlue-100 hover:bg-brandBlue-200 text-brandBlue-900 font-bold text-sm transition flex items-center gap-2">
+          <i class="fa-solid fa-music"></i> <span id="welcome-bgm-label">Musik: OFF</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Konten Utama Pembuka -->
+    <main class="max-w-6xl mx-auto w-full my-auto py-6 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center z-10">
+      <!-- Kiri: Judul, Slogan, Identitas, Tombol Mulai -->
+      <div class="lg:col-span-7 text-center lg:text-left space-y-5">
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brandGreen-600 text-white font-bold text-xs md:text-sm shadow-md">
+          <i class="fa-solid fa-tags text-brandYellow-300"></i> Kurikulum Merdeka • Materi Harga dan Pasar
+        </div>
+
+        <h1 class="text-4xl sm:text-5xl md:text-6xl font-display font-extrabold text-slate-900 leading-tight">
+          PASAR <span class="text-transparent bg-clip-text bg-gradient-to-r from-brandOrange-600 via-amber-500 to-brandGreen-600">PINTAR</span>
+        </h1>
+
+        <h2 class="text-xl sm:text-2xl font-display font-semibold text-brandBlue-900">
+          Petualangan Belajar Harga dan Pasar
+        </h2>
+
+        <div class="p-4 rounded-2xl bg-white/95 border-l-8 border-brandOrange-500 shadow-md inline-block">
+          <p class="text-base sm:text-lg font-extrabold text-brandOrange-700 italic">
+            "Belajar Ekonomi, Mengenal Pasar, Menjadi Konsumen Cerdas!"
+          </p>
+        </div>
+
+        <!-- Identitas Pengembang -->
+        <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4 text-sm text-slate-700 bg-white/85 p-3.5 rounded-2xl border border-white shadow-sm">
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-user-tie text-brandOrange-600 text-lg"></i>
+            <span>Pengembang: <strong>Tria Nova Nadia, S.E.</strong></span>
+          </div>
+          <span class="hidden sm:inline text-slate-300">|</span>
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-school text-brandGreen-600 text-lg"></i>
+            <span><strong>UPTD SMP Negeri 2 Kalianda</strong></span>
+          </div>
+        </div>
+
+        <!-- Tombol Aksi Utama -->
+        <div class="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+          <button onclick="startLearning()" class="btn-3d w-full sm:w-auto px-8 py-4 rounded-3xl bg-gradient-to-r from-brandOrange-500 via-amber-500 to-brandYellow-400 hover:from-brandOrange-600 hover:to-amber-500 text-white font-display font-extrabold text-xl tracking-wide flex items-center justify-center gap-3 border-2 border-white">
+            <i class="fa-solid fa-cart-plus text-2xl"></i>
+            MULAI BELAJAR
+          </button>
+          <button onclick="playPikoWelcomeSpeech()" class="btn-3d w-full sm:w-auto px-6 py-4 rounded-3xl bg-brandBlue-600 hover:bg-brandBlue-700 text-white font-bold text-base flex items-center justify-center gap-2">
+            <i class="fa-solid fa-volume-high"></i> Sambutan PIKO
+          </button>
+        </div>
+      </div>
+
+      <!-- Kanan: Ilustrasi Kartun 3D Pasar Tradisional & Modern + Robot PIKO -->
+      <div class="lg:col-span-5 flex flex-col items-center justify-center">
+        <div class="bg-white/90 backdrop-blur-md p-6 rounded-[2.5rem] border-4 border-white shadow-2xl w-full max-w-md relative">
+          <!-- Gelembung Bicara PIKO -->
+          <div class="bg-brandOrange-500 text-white p-3.5 rounded-2xl rounded-bl-none shadow-lg mb-3 text-sm font-semibold">
+            "Halo Teman-Teman! Aku <strong>PIKO</strong>, robot pemandu ekonomi. Ayo tekan <strong>Mulai Belajar</strong> untuk menjelajahi pasar tradisional dan pasar modern!"
+          </div>
+
+          <!-- Ilustrasi SVG Kartun 3D Robot PIKO + Pasar Tradisional & Modern -->
+          <svg viewBox="0 0 380 230" class="w-full h-auto drop-shadow-md">
+            <defs>
+              <linearGradient id="pikoBody" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#fb923c" />
+                <stop offset="100%" stop-color="#ea580c" />
+              </linearGradient>
+              <linearGradient id="modernShop" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#38bdf8" />
+                <stop offset="100%" stop-color="#0284c7" />
+              </linearGradient>
+            </defs>
+
+            <!-- Latar Langit & Lantai Pasar -->
+            <rect x="5" y="10" width="370" height="210" rx="24" fill="#f0f9ff" />
+            <rect x="5" y="175" width="370" height="45" rx="12" fill="#dcfce7" />
+
+            <!-- KIRI: Kios Pasar Tradisional (Tenda Bergaris Oranye-Kuning) -->
+            <rect x="20" y="95" width="110" height="80" rx="6" fill="#fef3c7" stroke="#d97706" stroke-width="2" />
+            <!-- Kanopi Tenda -->
+            <path d="M12,95 L28,68 L122,68 L138,95 Z" fill="#f97316" />
+            <path d="M35,68 L28,95 L52,95 L56,68 Z" fill="#fde047" />
+            <path d="M78,68 L74,95 L98,95 L96,68 Z" fill="#fde047" />
+            <text x="32" y="86" fill="#7c2d12" font-size="9" font-weight="bold">PASAR TRADISIONAL</text>
+            <!-- Keranjang Sayur & Buah -->
+            <circle cx="45" cy="145" r="12" fill="#22c55e" />
+            <circle cx="75" cy="145" r="12" fill="#ef4444" />
+            <circle cx="105" cy="145" r="12" fill="#facc15" />
+            <rect x="28" y="148" width="94" height="24" rx="4" fill="#b45309" />
+
+            <!-- KANAN: Gedung Pasar Modern / Minimarket -->
+            <rect x="245" y="55" width="115" height="120" rx="10" fill="url(#modernShop)" stroke="#0369a1" stroke-width="2" />
+            <rect x="255" y="65" width="95" height="22" rx="6" fill="#fde047" />
+            <text x="263" y="80" fill="#0c4a6e" font-size="9" font-weight="bold">PASAR MODERN</text>
+            <!-- Kaca Etalase -->
+            <rect x="258" y="96" width="42" height="50" rx="4" fill="#e0f2fe" />
+            <rect x="306" y="96" width="42" height="78" rx="4" fill="#bae6fd" />
+
+            <!-- TENGAH: Karakter Robot Pemandu PIKO 3D -->
+            <g class="animate-piko">
+              <!-- Antena Koin -->
+              <line x1="190" y1="36" x2="190" y2="56" stroke="#0284c7" stroke-width="5" stroke-linecap="round" />
+              <circle cx="190" cy="30" r="10" fill="#facc15" stroke="#ca8a04" stroke-width="2" />
+              <text x="186" y="34" fill="#854d0e" font-size="10" font-weight="bold">$</text>
+              <!-- Kepala PIKO -->
+              <rect x="142" y="54" width="96" height="68" rx="28" fill="url(#pikoBody)" stroke="#ffffff" stroke-width="3.5" />
+              <!-- Layar Wajah -->
+              <rect x="154" y="66" width="72" height="44" rx="18" fill="#0f172a" />
+              <!-- Mata Ceria -->
+              <circle cx="174" cy="86" r="8" fill="#38bdf8" />
+              <circle cx="176" cy="84" r="3" fill="#ffffff" />
+              <circle cx="206" cy="86" r="8" fill="#38bdf8" />
+              <circle cx="208" cy="84" r="3" fill="#ffffff" />
+              <!-- Senyum -->
+              <path d="M 180 98 Q 190 106 200 98" stroke="#fde047" stroke-width="3.5" fill="none" stroke-linecap="round" />
+              <!-- Badan PIKO -->
+              <rect x="156" y="126" width="68" height="52" rx="20" fill="#ffffff" stroke="#f97316" stroke-width="3.5" />
+              <!-- Ikon Keranjang di Dada -->
+              <circle cx="190" cy="152" r="14" fill="#dcfce7" />
+              <path d="M182 148 L186 158 L196 158 L199 148 Z" fill="#16a34a" />
+              <!-- Tangan -->
+              <rect x="128" y="132" width="22" height="12" rx="6" fill="#facc15" />
+              <rect x="230" y="132" width="22" height="12" rx="6" fill="#facc15" />
+            </g>
+          </svg>
+        </div>
+      </div>
+    </main>
+
+    <footer class="text-center text-xs font-semibold text-slate-600 z-10">
+      © 2026 PASAR PINTAR • Dikembangkan oleh Tria Nova Nadia, S.E. (UPTD SMP Negeri 2 Kalianda)
+    </footer>
+  </section>
+
+  <!-- ===================================================================== -->
+  <!-- APLIKASI UTAMA (NAVBAR AUDIO + KONTEN 7 MENU) -->
+  <!-- ===================================================================== -->
+  <div id="main-app" class="hidden min-h-screen flex flex-col">
+    
+    <!-- TOP NAVBAR & AUDIO CONTROLLER -->
+    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b-2 border-brandOrange-200 shadow-sm no-print">
+      <div class="max-w-7xl mx-auto px-3 sm:px-6 py-2.5 flex flex-wrap items-center justify-between gap-2">
+        <!-- Logo & Tombol Home -->
+        <button onclick="navigateTo('dashboard')" class="flex items-center gap-2.5 text-left group">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brandOrange-500 to-brandYellow-400 text-white flex items-center justify-center text-lg font-bold shadow group-hover:scale-105 transition">
+            <i class="fa-solid fa-store"></i>
+          </div>
+          <div>
+            <h1 class="font-display font-bold text-base sm:text-lg text-brandOrange-700 leading-none">PASAR PINTAR</h1>
+            <span class="text-[11px] font-bold text-brandGreen-600">IPS SMP Kelas VII • Fase D</span>
+          </div>
+        </button>
+
+        <!-- Bilah Kontrol Suara PIKO (Play, Pause, Stop, Volume, Musik) -->
+        <div class="flex flex-wrap items-center gap-1.5 sm:gap-2 bg-brandOrange-50 px-3 py-1.5 rounded-2xl border border-brandOrange-200">
+          <span class="text-xs font-extrabold text-brandOrange-700 hidden md:inline mr-1">
+            <i class="fa-solid fa-robot text-brandOrange-500"></i> Suara PIKO:
+          </span>
+          <button onclick="speakCurrentPage()" title="Putar Narasi" class="w-8 h-8 rounded-xl bg-brandGreen-500 hover:bg-brandGreen-600 text-white flex items-center justify-center text-xs shadow-sm transition">
+            <i class="fa-solid fa-play"></i>
+          </button>
+          <button onclick="pauseResumeSpeech()" title="Jeda / Lanjutkan" class="w-8 h-8 rounded-xl bg-brandYellow-400 hover:bg-brandYellow-500 text-slate-900 flex items-center justify-center text-xs shadow-sm transition">
+            <i class="fa-solid fa-pause"></i>
+          </button>
+          <button onclick="stopSpeech()" title="Hentikan Suara" class="w-8 h-8 rounded-xl bg-red-500 hover:bg-red-600 text-white flex items-center justify-center text-xs shadow-sm transition">
+            <i class="fa-solid fa-stop"></i>
+          </button>
+          <!-- Volume -->
+          <div class="hidden sm:flex items-center gap-1.5 pl-1 border-l border-brandOrange-200">
+            <i class="fa-solid fa-volume-low text-brandOrange-600 text-xs"></i>
+            <input type="range" id="volume-slider" min="0" max="1" step="0.1" value="1" onchange="updateVolume(this.value)" class="w-16 accent-brandOrange-500 cursor-pointer" title="Atur Volume" />
+          </div>
+          <!-- Musik Latar -->
+          <button onclick="toggleBGM()" class="px-2.5 py-1 rounded-xl bg-white hover:bg-brandBlue-50 text-brandBlue-900 border border-brandBlue-200 text-xs font-bold flex items-center gap-1 transition">
+            <i class="fa-solid fa-music"></i> <span id="nav-bgm-label" class="hidden sm:inline">Musik</span>
+          </button>
+        </div>
+
+        <!-- Progres & Menu Utama -->
+        <div class="flex items-center gap-2">
+          <div class="hidden lg:flex items-center gap-2 bg-brandGreen-50 px-3 py-1.5 rounded-xl border border-brandGreen-200">
+            <span class="text-xs font-bold text-brandGreen-700">Progres:</span>
+            <div class="w-24 h-2.5 bg-brandGreen-100 rounded-full overflow-hidden">
+              <div id="top-progress-bar" class="h-full bg-brandGreen-600 transition-all duration-500" style="width: 0%"></div>
+            </div>
+            <span id="top-progress-text" class="text-xs font-extrabold text-brandGreen-700">0%</span>
+          </div>
+          <button onclick="toggleGuideModal(true)" class="w-9 h-9 rounded-xl bg-brandYellow-300 hover:bg-brandYellow-400 text-slate-900 flex items-center justify-center font-bold shadow-sm transition" title="Petunjuk">
+            <i class="fa-solid fa-question"></i>
+          </button>
+          <button onclick="navigateTo('dashboard')" class="px-3.5 py-2 rounded-xl bg-brandOrange-500 hover:bg-brandOrange-600 text-white text-xs sm:text-sm font-bold flex items-center gap-1.5 shadow-sm transition">
+            <i class="fa-solid fa-house"></i> <span class="hidden sm:inline">Menu Utama</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- AREA KONTEN DINAMIS -->
+    <main id="app-content" class="flex-1 max-w-7xl mx-auto w-full p-4 sm:p-6 md:p-8"></main>
+
+    <!-- FOOTER -->
+    <footer class="bg-white/85 border-t border-brandOrange-200 py-4 px-6 text-center text-xs text-slate-600 no-print">
+      <p class="font-bold text-brandOrange-700">PASAR PINTAR — Petualangan Belajar Harga dan Pasar</p>
+      <p class="mt-0.5">Oleh: Tria Nova Nadia, S.E. • UPTD SMP Negeri 2 Kalianda • IPS Kelas VII Fase D</p>
+    </footer>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- JAVASCRIPT UTAMA APLIKASI PASAR PINTAR -->
+  <!-- ===================================================================== -->
+  <script>
+    /*************************************************************************
+     * 1. STATE MANAGEMENT & LOCALSTORAGE
+     *************************************************************************/
+    const STORAGE_KEY = 'pasar_pintar_mpi_v1';
+
+    let appState = {
+      currentPage: 'welcome',
+      activeBab: 0,
+      completedBabs: [],
+      simVisited: { sim1: false, sim2: false, sim3: false },
+      gameStars: { g1: 0, g2: 0, g3: 0, g4: 0, g5: 0 },
+      gameHighScores: { g1: 0, g2: 0, g3: 0, g4: 0, g5: 0 },
+      praktikumData: { rows: [] },
+      lkpdData: {},
+      evalResult: null,
+      studentName: '',
+      devPhoto: '',
+      volume: 1.0,
+      bgmEnabled: false
+    };
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          appState = { ...appState, ...JSON.parse(raw) };
+        }
+      } catch (e) {
+        console.warn('Gagal memuat localStorage:', e);
+      }
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+        updateProgressUI();
+      } catch (e) {
+        console.warn('Gagal menyimpan localStorage:', e);
+      }
+    }
+
+    function calculateProgress() {
+      // 7 Bab + 3 Simulasi + 5 Game + Praktikum + LKPD + Evaluasi = 18 komponen
+      let pts = 0;
+      pts += (appState.completedBabs?.length || 0);
+      pts += Object.values(appState.simVisited || {}).filter(Boolean).length;
+      pts += Object.values(appState.gameHighScores || {}).filter(s => s > 0).length;
+      if (appState.praktikumData && appState.praktikumData.kelompok) pts += 1;
+      if (appState.lkpdData && appState.lkpdData.kelompok) pts += 1;
+      if (appState.evalResult) pts += 1;
+      return Math.min(100, Math.round((pts / 18) * 100));
+    }
+
+    function updateProgressUI() {
+      const pct = calculateProgress();
+      const bar = document.getElementById('top-progress-bar');
+      const txt = document.getElementById('top-progress-text');
+      if (bar) bar.style.width = pct + '%';
+      if (txt) txt.textContent = pct + '%';
+    }
+
+    function showToast(msg, type = 'info') {
+      const container = document.getElementById('toast-container');
+      const styles = {
+        info: 'bg-brandBlue-600 text-white border-brandBlue-100',
+        success: 'bg-brandGreen-600 text-white border-brandGreen-100',
+        warning: 'bg-brandOrange-500 text-white border-brandYellow-300',
+        error: 'bg-red-600 text-white border-red-200'
+      };
+      const icons = {
+        info: 'fa-circle-info',
+        success: 'fa-circle-check',
+        warning: 'fa-triangle-exclamation',
+        error: 'fa-circle-xmark'
+      };
+      const el = document.createElement('div');
+      el.className = `pointer-events-auto flex items-center gap-3 px-4 py-3 rounded-2xl shadow-xl border-2 ${styles[type]} page-transition text-sm font-bold`;
+      el.innerHTML = `<i class="fa-solid ${icons[type]} text-lg"></i><span>${msg}</span>`;
+      container.appendChild(el);
+      setTimeout(() => {
+        el.style.opacity = '0';
+        el.style.transition = 'opacity 0.3s';
+        setTimeout(() => el.remove(), 300);
+      }, 3200);
+    }
+
+    function toggleGuideModal(show) {
+      const modal = document.getElementById('guide-modal');
+      if (show) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+      } else {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+    }
+
+    /*************************************************************************
+     * 2. SISTEM AUDIO, EFEK TRANSAKSI & TEXT-TO-SPEECH BAHASA INDONESIA
+     *************************************************************************/
+    let currentNarrationText = "Selamat datang di Pasar Pintar! Belajar ekonomi, mengenal pasar, menjadi konsumen cerdas!";
+    let audioCtx = null;
+    let bgmInterval = null;
+
+    function initAudioCtx() {
+      if (!audioCtx) {
+        const AC = window.AudioContext || window.webkitAudioContext;
+        if (AC) audioCtx = new AC();
+      }
+      if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+    }
+
+    // Efek Suara: Klik, Koin Transaksi (Cha-ching!), Benar, Salah, Menang
+    function playSFX(type) {
+      try {
+        initAudioCtx();
+        if (!audioCtx) return;
+        const now = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        gain.gain.value = appState.volume * 0.25;
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        if (type === 'click') {
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(540, now);
+          osc.frequency.exponentialRampToValueAtTime(820, now + 0.08);
+          osc.start(now);
+          osc.stop(now + 0.08);
+        } else if (type === 'coin') {
+          // Suara koin transaksi pasar
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(987.77, now); // B5
+          osc.frequency.setValueAtTime(1318.51, now + 0.08); // E6
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+          osc.start(now);
+          osc.stop(now + 0.35);
+        } else if (type === 'correct') {
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(523.25, now);
+          osc.frequency.setValueAtTime(659.25, now + 0.1);
+          osc.frequency.setValueAtTime(783.99, now + 0.2);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.42);
+          osc.start(now);
+          osc.stop(now + 0.42);
+        } else if (type === 'wrong') {
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(210, now);
+          osc.frequency.linearRampToValueAtTime(140, now + 0.28);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.32);
+          osc.start(now);
+          osc.stop(now + 0.32);
+        } else if (type === 'win') {
+          const notes = [523.25, 659.25, 783.99, 1046.50];
+          notes.forEach((f, i) => {
+            const o = audioCtx.createOscillator();
+            const g = audioCtx.createGain();
+            o.type = 'triangle';
+            o.frequency.setValueAtTime(f, now + i * 0.11);
+            g.gain.setValueAtTime(appState.volume * 0.25, now + i * 0.11);
+            g.gain.exponentialRampToValueAtTime(0.001, now + i * 0.11 + 0.35);
+            o.connect(g);
+            g.connect(audioCtx.destination);
+            o.start(now + i * 0.11);
+            o.stop(now + i * 0.11 + 0.35);
+          });
+        }
+      } catch (e) {}
+    }
+
+    function toggleBGM() {
+      initAudioCtx();
+      appState.bgmEnabled = !appState.bgmEnabled;
+      const wLbl = document.getElementById('welcome-bgm-label');
+      const nLbl = document.getElementById('nav-bgm-label');
+      if (wLbl) wLbl.textContent = appState.bgmEnabled ? 'Musik: ON' : 'Musik: OFF';
+      if (nLbl) nLbl.textContent = appState.bgmEnabled ? 'Musik ON' : 'Musik';
+
+      if (appState.bgmEnabled) {
+        startBGMLoop();
+        showToast('Musik latar ceria diaktifkan', 'info');
+      } else {
+        stopBGMLoop();
+        showToast('Musik latar dimatikan', 'info');
+      }
+    }
+
+    function startBGMLoop() {
+      stopBGMLoop();
+      const notes = [329.63, 392.00, 440.00, 523.25, 440.00, 392.00, 329.63, 293.66];
+      let step = 0;
+      bgmInterval = setInterval(() => {
+        if (!appState.bgmEnabled || !audioCtx) return;
+        const now = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(notes[step % notes.length], now);
+        gain.gain.setValueAtTime(appState.volume * 0.04, now);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.42);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(now);
+        osc.stop(now + 0.42);
+        step++;
+      }, 480);
+    }
+
+    function stopBGMLoop() {
+      if (bgmInterval) {
+        clearInterval(bgmInterval);
+        bgmInterval = null;
+      }
+    }
+
+    function speakText(text) {
+      stopSpeech();
+      if (!('speechSynthesis' in window)) {
+        showToast('Browser tidak mendukung Text-to-Speech.', 'warning');
+        return;
+      }
+      const clean = text.replace(/<[^>]*>?/gm, ' ').replace(/\s+/g, ' ').trim();
+      const utt = new SpeechSynthesisUtterance(clean);
+      utt.lang = 'id-ID';
+      utt.rate = 0.98;
+      utt.pitch = 1.08;
+      utt.volume = appState.volume;
+      const voices = window.speechSynthesis.getVoices();
+      const idVoice = voices.find(v => v.lang.includes('id') || v.lang.includes('ID'));
+      if (idVoice) utt.voice = idVoice;
+      window.speechSynthesis.speak(utt);
+    }
+
+    function speakCurrentPage() {
+      playSFX('click');
+      speakText(currentNarrationText);
+      showToast('PIKO membacakan narasi...', 'info');
+    }
+
+    function pauseResumeSpeech() {
+      if (!('speechSynthesis' in window)) return;
+      if (window.speechSynthesis.speaking) {
+        if (window.speechSynthesis.paused) {
+          window.speechSynthesis.resume();
+          showToast('Narasi dilanjutkan', 'info');
+        } else {
+          window.speechSynthesis.pause();
+          showToast('Narasi dijeda', 'info');
+        }
+      }
+    }
+
+    function stopSpeech() {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+    }
+
+    function updateVolume(val) {
+      appState.volume = parseFloat(val);
+      saveState();
+    }
+
+    function playPikoWelcomeSpeech() {
+      playSFX('coin');
+      speakText("Halo sahabat pintar! Selamat datang di Pasar Pintar, petualangan belajar harga dan pasar. Belajar ekonomi, mengenal pasar, menjadi konsumen cerdas! Ayo klik tombol Mulai Belajar sekarang!");
+    }
+
+    /*************************************************************************
+     * 3. DATABASE MATERI LENGKAP (7 BAB KURIKULUM MERDEKA FASE D)
+     *************************************************************************/
+    const MATERI_DATA = [
+      {
+        id: 1,
+        bab: "BAB 1",
+        title: "Pengertian Harga",
+        icon: "fa-tag",
+        color: "from-brandOrange-500 to-brandOrange-700",
+        narration: "Bab 1: Pengertian Harga. Harga adalah nilai tukar suatu barang atau jasa yang dinyatakan dengan satuan uang. Harga memiliki fungsi sebagai alat ukur nilai barang, penentu keputusan beli, dan pengatur alokasi sumber daya ekonomi.",
+        content: `
+          <div class="space-y-4 text-sm md:text-base">
+            <div class="bg-brandOrange-50 p-5 rounded-2xl border-l-4 border-brandOrange-500">
+              <h4 class="font-display font-bold text-lg text-brandOrange-700 mb-1.5">1. Pengertian Harga</h4>
+              <p class="leading-relaxed"><strong>Harga</strong> adalah nilai tukar suatu barang atau jasa yang dinyatakan dalam satuan uang (misalnya Rupiah). Dalam kegiatan jual beli, harga menjadi kesepakatan antara penjual yang menawarkan barang dan pembeli yang membutuhkan barang tersebut.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-white p-4 rounded-2xl border-2 border-brandYellow-300 shadow-sm">
+                <h5 class="font-display font-bold text-base text-amber-800 mb-2"><i class="fa-solid fa-gears mr-1.5"></i>2. Fungsi & Peranan Harga</h5>
+                <ul class="list-disc pl-5 text-sm space-y-1">
+                  <li><strong>Alat Ukur Nilai:</strong> Menunjukkan tingkat kualitas dan kelangkaan suatu barang.</li>
+                  <li><strong>Acuan Keputusan Konsumen:</strong> Membantu pembeli membandingkan barang sesuai daya beli.</li>
+                  <li><strong>Sinyal bagi Produsen:</strong> Harga tinggi mendorong produsen memproduksi lebih banyak barang.</li>
+                  <li><strong>Alat Pemerataan & Alokasi:</strong> Mengatur distribusi barang agar tepat sasaran.</li>
+                </ul>
+              </div>
+              <div class="bg-white p-4 rounded-2xl border-2 border-brandBlue-200 shadow-sm">
+                <h5 class="font-display font-bold text-base text-brandBlue-900 mb-2"><i class="fa-solid fa-sliders mr-1.5"></i>3. Faktor yang Memengaruhi Harga</h5>
+                <ul class="list-disc pl-5 text-sm space-y-1">
+                  <li><strong>Biaya Produksi:</strong> Harga bahan baku, upah tenaga kerja, dan transportasi.</li>
+                  <li><strong>Permintaan & Penawaran:</strong> Banyaknya pembeli dan ketersediaan stok barang di pasar.</li>
+                  <li><strong>Kualitas & Merek Barang:</strong> Barang berkualitas premium umumnya berharga lebih tinggi.</li>
+                  <li><strong>Kebijakan Pemerintah:</strong> Pajak, subsidi, atau penetapan Harga Eceran Tertinggi (HET).</li>
+                </ul>
+              </div>
+            </div>
+            <div class="bg-brandGreen-50 p-4 rounded-2xl border border-brandGreen-200">
+              <strong class="text-brandGreen-700 text-sm block mb-1"><i class="fa-solid fa-lightbulb mr-1"></i>Contoh Kasus Nyata:</strong>
+              <p class="text-xs sm:text-sm text-slate-700">Saat musim panen mangga tiba, stok melimpah sehingga harga turun menjadi Rp10.000/kg. Sebaliknya, saat belum musim panen, harga bisa naik mencapai Rp25.000/kg.</p>
+            </div>
+          </div>
+        `,
+        visualSVG: `
+          <svg viewBox="0 0 360 170" class="w-full h-40 rounded-2xl bg-gradient-to-b from-amber-50 to-orange-100 border border-brandOrange-200">
+            <rect x="35" y="35" width="110" height="75" rx="14" fill="#f97316" />
+            <text x="55" y="65" fill="#ffffff" font-size="11" font-weight="bold">BARANG / JASA</text>
+            <text x="62" y="85" fill="#fef08a" font-size="11" font-weight="bold">1 Kg Beras</text>
+            <path d="M155,72 L205,72" stroke="#0284c7" stroke-width="4" marker-end="url(#arrow)" />
+            <text x="155" y="62" fill="#0369a1" font-size="10" font-weight="bold">Nilai Tukar</text>
+            <rect x="215" y="35" width="110" height="75" rx="14" fill="#16a34a" />
+            <text x="235" y="65" fill="#ffffff" font-size="11" font-weight="bold">SATUAN UANG</text>
+            <text x="235" y="85" fill="#fde047" font-size="13" font-weight="bold">Rp 14.000</text>
+            <text x="95" y="142" fill="#9a3412" font-size="11" font-weight="bold">HARGA = NILAI TUKAR DALAM UANG</text>
+          </svg>
+        `,
+        summary: "Harga adalah nilai tukar barang/jasa yang dinyatakan dalam uang, berfungsi sebagai alat ukur nilai, sinyal produsen, dan acuan konsumen.",
+        quiz: {
+          question: "Berikut ini yang merupakan fungsi harga bagi seorang konsumen yang cerdas adalah...",
+          options: ["Menentukan gaji karyawan pabrik", "Menjadi acuan dalam membandingkan kualitas barang dan menyesuaikan daya beli", "Menghitung pajak penghasilan negara", "Menambah jumlah uang yang beredar"],
+          answer: 1,
+          explanation: "Bagi konsumen, harga membantu mengukur nilai barang dan menyesuaikan pembelian dengan anggaran yang dimiliki."
+        }
+      },
+      {
+        id: 2,
+        bab: "BAB 2",
+        title: "Pengertian dan Fungsi Pasar",
+        icon: "fa-store",
+        color: "from-brandBlue-500 to-brandBlue-900",
+        narration: "Bab 2: Pengertian dan Fungsi Pasar. Pasar adalah tempat atau sarana bertemunya penjual dan pembeli untuk melakukan transaksi jual beli barang atau jasa. Pasar memiliki tiga fungsi utama, yaitu fungsi distribusi, pembentukan harga, dan promosi.",
+        content: `
+          <div class="space-y-4 text-sm md:text-base">
+            <div class="bg-brandBlue-50 p-5 rounded-2xl border-l-4 border-brandBlue-600">
+              <h4 class="font-display font-bold text-lg text-brandBlue-900 mb-1.5">1. Pengertian Pasar</h4>
+              <p class="leading-relaxed">Dalam ilmu ekonomi, <strong>pasar</strong> tidak hanya berarti bangunan fisik tempat berjualan, melainkan <strong>sarana bertemunya penjual dan pembeli</strong> (baik secara langsung maupun melalui media daring/online) untuk melakukan transaksi pertukaran barang atau jasa sehingga terbentuk kesepakatan harga.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div class="bg-white p-4 rounded-2xl border-2 border-brandOrange-200 shadow-sm">
+                <span class="px-2.5 py-1 rounded-lg bg-brandOrange-100 text-brandOrange-700 font-bold text-xs">Fungsi 1: Distribusi</span>
+                <p class="text-xs sm:text-sm mt-2 text-slate-700">Menyalurkan barang dan jasa dari produsen (penghasil) agar mudah sampai ke tangan konsumen (pemakai).</p>
+              </div>
+              <div class="bg-white p-4 rounded-2xl border-2 border-brandGreen-200 shadow-sm">
+                <span class="px-2.5 py-1 rounded-lg bg-brandGreen-100 text-brandGreen-700 font-bold text-xs">Fungsi 2: Pembentuk Harga</span>
+                <p class="text-xs sm:text-sm mt-2 text-slate-700">Terjadi proses tawar-menawar dan interaksi permintaan-penawaran hingga tercipta harga kesepakatan.</p>
+              </div>
+              <div class="bg-white p-4 rounded-2xl border-2 border-brandYellow-300 shadow-sm">
+                <span class="px-2.5 py-1 rounded-lg bg-brandYellow-100 text-amber-800 font-bold text-xs">Fungsi 3: Promosi</span>
+                <p class="text-xs sm:text-sm mt-2 text-slate-700">Sarana produsen memperkenalkan produk baru dan keunggulannya kepada calon pembeli.</p>
+              </div>
+            </div>
+            <div class="bg-white p-4 rounded-2xl border border-slate-200">
+              <h5 class="font-bold text-slate-800 mb-1.5"><i class="fa-solid fa-puzzle-piece text-brandBlue-600 mr-1.5"></i>4 Unsur Utama Terbentuknya Pasar:</h5>
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs font-bold text-center">
+                <div class="p-2.5 rounded-xl bg-orange-50 text-orange-800">1. Adanya Penjual</div>
+                <div class="p-2.5 rounded-xl bg-sky-50 text-sky-800">2. Adanya Pembeli</div>
+                <div class="p-2.5 rounded-xl bg-green-50 text-green-800">3. Barang / Jasa</div>
+                <div class="p-2.5 rounded-xl bg-amber-50 text-amber-800">4. Kesepakatan Harga</div>
+              </div>
+            </div>
+          </div>
+        `,
+        visualSVG: `
+          <svg viewBox="0 0 360 165" class="w-full h-40 rounded-2xl bg-sky-50 border border-brandBlue-200">
+            <circle cx="80" cy="65" r="28" fill="#f97316" />
+            <text x="58" y="69" fill="#fff" font-size="10" font-weight="bold">PENJUAL</text>
+            <circle cx="280" cy="65" r="28" fill="#0284c7" />
+            <text x="258" y="69" fill="#fff" font-size="10" font-weight="bold">PEMBELI</text>
+            <rect x="130" y="42" width="100" height="46" rx="12" fill="#facc15" stroke="#ca8a04" stroke-width="2" />
+            <text x="148" y="63" fill="#713f12" font-size="10" font-weight="bold">TRANSAKSI &</text>
+            <text x="145" y="77" fill="#713f12" font-size="10" font-weight="bold">HARGA SEPAKAT</text>
+            <text x="65" y="135" fill="#0c4a6e" font-size="11" font-weight="bold">Distribusi • Pembentuk Harga • Promosi</text>
+          </svg>
+        `,
+        summary: "Pasar adalah sarana bertemunya penjual dan pembeli untuk bertransaksi. Pasar berfungsi sebagai sarana distribusi, pembentukan harga, dan promosi.",
+        quiz: {
+          question: "Pasar membantu menyalurkan hasil panen petani di desa agar dapat dibeli oleh masyarakat di perkotaan. Hal ini menunjukkan fungsi pasar sebagai sarana...",
+          options: ["Promosi", "Distribusi", "Produksi", "Konsumsi"],
+          answer: 1,
+          explanation: "Menyalurkan barang dari produsen ke konsumen merupakan fungsi distribusi pasar."
+        }
+      },
+      {
+        id: 3,
+        bab: "BAB 3",
+        title: "Jenis-Jenis Pasar",
+        icon: "fa-layer-group",
+        color: "from-brandGreen-500 to-emerald-700",
+        narration: "Bab 3: Jenis-Jenis Pasar. Pasar dapat dikelompokkan berdasarkan wujudnya menjadi pasar konkret dan pasar abstrak; berdasarkan cara pelayanannya menjadi pasar tradisional dan pasar modern; serta berdasarkan luas jangkauannya menjadi pasar lokal, nasional, dan internasional.",
+        content: `
+          <div class="space-y-3.5 text-sm">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+              <div class="bg-white p-4 rounded-2xl border-l-4 border-brandOrange-500 shadow-sm">
+                <h5 class="font-bold text-brandOrange-700">1. Pasar Tradisional</h5>
+                <p class="text-slate-700 mt-1">Pasar yang dikelola sederhana dengan proses <strong>tawar-menawar langsung</strong> antara penjual dan pembeli. Contoh: <em>Pasar Inpres Kalianda, Pasar Beringharjo</em>.</p>
+              </div>
+              <div class="bg-white p-4 rounded-2xl border-l-4 border-brandBlue-500 shadow-sm">
+                <h5 class="font-bold text-brandBlue-700">2. Pasar Modern</h5>
+                <p class="text-slate-700 mt-1">Pasar dengan pelayanan mandiri (swalayan), <strong>label harga pasti (pas)</strong>, dan fasilitas nyaman. Contoh: <em>Minimarket, Supermarket, Mall</em>.</p>
+              </div>
+              <div class="bg-white p-4 rounded-2xl border-l-4 border-brandGreen-600 shadow-sm">
+                <h5 class="font-bold text-brandGreen-700">3. Pasar Konkret (Nyata)</h5>
+                <p class="text-slate-700 mt-1">Penjual, pembeli, dan barang dagangan hadir secara fisik di satu lokasi yang sama. Contoh: <em>Pasar sayur, pasar ikan, toko kelontong</em>.</p>
+              </div>
+              <div class="bg-white p-4 rounded-2xl border-l-4 border-purple-500 shadow-sm">
+                <h5 class="font-bold text-purple-700">4. Pasar Abstrak (Tidak Nyata)</h5>
+                <p class="text-slate-700 mt-1">Transaksi dilakukan tanpa tatap muka langsung dan barang hanya berupa contoh/foto. Contoh: <em>Marketplace online (Tokopedia, Shopee), Bursa Saham</em>.</p>
+              </div>
+            </div>
+            <div class="bg-amber-50 p-4 rounded-2xl border border-amber-300">
+              <h5 class="font-bold text-amber-900 mb-2">5–7. Berdasarkan Luas Wilayah Jangkauan:</h5>
+              <ul class="list-disc pl-5 space-y-1 text-xs sm:text-sm text-slate-800">
+                <li><strong>Pasar Lokal:</strong> Melayani pembeli dan penjual di daerah setempat (Contoh: <em>Pasar desa atau pasar kecamatan</em>).</li>
+                <li><strong>Pasar Nasional:</strong> Jangkauannya meliputi seluruh wilayah satu negara (Contoh: <em>Pasar Tanah Abang Jakarta yang memasok pakaian ke seluruh Indonesia</em>).</li>
+                <li><strong>Pasar Internasional:</strong> Melibatkan pembeli dan penjual antarnegara / ekspor-impor (Contoh: <em>Pasar kopi dunia di Brasil, pasar minyak mentah dunia</em>).</li>
+              </ul>
+            </div>
+          </div>
+        `,
+        visualSVG: `
+          <svg viewBox="0 0 360 155" class="w-full h-36 rounded-2xl bg-gradient-to-r from-orange-100 via-yellow-50 to-sky-100 border border-slate-200">
+            <rect x="18" y="25" width="145" height="105" rx="14" fill="#fff7ed" stroke="#f97316" stroke-width="2" />
+            <text x="35" y="55" fill="#c2410c" font-size="11" font-weight="bold">PASAR TRADISIONAL</text>
+            <text x="35" y="75" fill="#7c2d12" font-size="10">• Ada tawar-menawar</text>
+            <text x="35" y="92" fill="#7c2d12" font-size="10">• Pasar Konkret</text>
+
+            <rect x="195" y="25" width="145" height="105" rx="14" fill="#f0f9ff" stroke="#0284c7" stroke-width="2" />
+            <text x="215" y="55" fill="#0369a1" font-size="11" font-weight="bold">PASAR MODERN / ONLINE</text>
+            <text x="215" y="75" fill="#0c4a6e" font-size="10">• Harga pas / barcode</text>
+            <text x="215" y="92" fill="#0c4a6e" font-size="10">• Swalayan & Abstrak</text>
+          </svg>
+        `,
+        summary: "Jenis pasar dibedakan menjadi pasar tradisional vs modern, pasar konkret vs abstrak, serta pasar lokal, nasional, dan internasional.",
+        quiz: {
+          question: "Sinta membeli sepatu olahraga melalui aplikasi belanja online di ponselnya tanpa bertemu langsung dengan penjual. Transaksi tersebut terjadi pada...",
+          options: ["Pasar konkret", "Pasar abstrak", "Pasar tradisional", "Pasar loak"],
+          answer: 1,
+          explanation: "Pasar abstrak adalah pasar di mana penjual dan pembeli tidak bertemu secara fisik dan transaksi dilakukan melalui media komunikasi/internet."
+        }
+      },
+      {
+        id: 4,
+        bab: "BAB 4",
+        title: "Permintaan (Demand)",
+        icon: "fa-cart-arrow-down",
+        color: "from-sky-500 to-indigo-700",
+        narration: "Bab 4: Permintaan. Permintaan adalah sejumlah barang atau jasa yang ingin dan mampu dibeli oleh konsumen pada berbagai tingkat harga dan waktu tertentu. Hukum permintaan menyatakan bahwa jika harga naik, maka jumlah barang yang diminta akan turun.",
+        content: `
+          <div class="space-y-4 text-sm md:text-base">
+            <div class="bg-sky-50 p-5 rounded-2xl border-l-4 border-sky-600">
+              <h4 class="font-display font-bold text-lg text-sky-900 mb-1">1. Pengertian & Hukum Permintaan</h4>
+              <p class="leading-relaxed"><strong>Permintaan (Demand)</strong> adalah keseluruhan jumlah barang atau jasa yang bersedia dan mampu dibeli oleh konsumen pada berbagai tingkat harga dalam periode waktu tertentu.</p>
+              <div class="mt-3 p-3 rounded-xl bg-white border-2 border-sky-300 font-bold text-sky-900 text-center text-xs sm:text-sm">
+                HUKUM PERMINTAAN: "Semakin TINGGI harga suatu barang, semakin SEDIKIT jumlah barang yang diminta. Sebaliknya, semakin RENDAH harga barang, semakin BANYAK jumlah barang yang diminta (ceteris paribus)."
+              </div>
+            </div>
+            <div class="bg-white p-4 rounded-2xl border border-slate-200">
+              <h5 class="font-bold text-slate-800 mb-2"><i class="fa-solid fa-list-ul text-sky-600 mr-1.5"></i>Faktor-Faktor yang Memengaruhi Permintaan:</h5>
+              <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs sm:text-sm">
+                <li class="p-2.5 rounded-xl bg-slate-50"><strong>1. Harga Barang Itu Sendiri:</strong> Harga murah menarik lebih banyak pembeli.</li>
+                <li class="p-2.5 rounded-xl bg-slate-50"><strong>2. Pendapatan Masyarakat:</strong> Pendapatan naik meningkatkan daya beli konsumen.</li>
+                <li class="p-2.5 rounded-xl bg-slate-50"><strong>3. Selera Konsumen:</strong> Tren mode atau kegemaran meningkatkan permintaan.</li>
+                <li class="p-2.5 rounded-xl bg-slate-50"><strong>4. Jumlah Penduduk & Harga Barang Lain:</strong> Barang pengganti (substitusi) memengaruhi pilihan beli.</li>
+              </ul>
+            </div>
+          </div>
+        `,
+        visualSVG: `
+          <svg viewBox="0 0 360 175" class="w-full h-40 rounded-2xl bg-white border border-sky-200">
+            <!-- Sumbu P dan Q -->
+            <line x1="55" y1="20" x2="55" y2="140" stroke="#334155" stroke-width="2.5" />
+            <line x1="55" y1="140" x2="320" y2="140" stroke="#334155" stroke-width="2.5" />
+            <text x="22" y="30" fill="#0f172a" font-size="10" font-weight="bold">Harga (P)</text>
+            <text x="255" y="158" fill="#0f172a" font-size="10" font-weight="bold">Jumlah (Q)</text>
+            <!-- Kurva Permintaan (Turun dari kiri atas ke kanan bawah) -->
+            <line x1="85" y1="35" x2="285" y2="125" stroke="#ef4444" stroke-width="4" stroke-linecap="round" />
+            <text x="275" y="115" fill="#dc2626" font-size="12" font-weight="bold">D (Demand)</text>
+            <text x="95" y="35" fill="#64748b" font-size="9">Harga Tinggi → Beli Sedikit</text>
+            <text x="180" y="132" fill="#64748b" font-size="9">Harga Murah → Beli Banyak</text>
+          </svg>
+        `,
+        summary: "Permintaan berbanding terbalik dengan harga (jika harga naik, permintaan turun). Kurva permintaan bergerak turun dari kiri atas ke kanan bawah.",
+        quiz: {
+          question: "Menurut hukum permintaan, apabila harga buah jeruk turun dari Rp20.000/kg menjadi Rp12.000/kg, maka jumlah jeruk yang diminta pembeli akan...",
+          options: ["Berkurang drastis", "Tetap sama", "Bertambah banyak", "Menjadi nol"],
+          answer: 2,
+          explanation: "Sesuai hukum permintaan, ketika harga turun maka daya beli meningkat sehingga jumlah barang yang diminta bertambah."
+        }
+      },
+      {
+        id: 5,
+        bab: "BAB 5",
+        title: "Penawaran (Supply)",
+        icon: "fa-truck-ramp-box",
+        color: "from-amber-500 to-orange-600",
+        narration: "Bab 5: Penawaran. Penawaran adalah sejumlah barang atau jasa yang tersedia dan ditawarkan oleh penjual pada berbagai tingkat harga dan waktu tertentu. Hukum penawaran menyatakan bahwa jika harga naik, maka jumlah barang yang ditawarkan penjual juga meningkat.",
+        content: `
+          <div class="space-y-4 text-sm md:text-base">
+            <div class="bg-amber-50 p-5 rounded-2xl border-l-4 border-amber-500">
+              <h4 class="font-display font-bold text-lg text-amber-900 mb-1">1. Pengertian & Hukum Penawaran</h4>
+              <p class="leading-relaxed"><strong>Penawaran (Supply)</strong> adalah keseluruhan jumlah barang atau jasa yang bersedia dijual atau ditawarkan oleh produsen/penjual pada berbagai tingkat harga dalam waktu tertentu.</p>
+              <div class="mt-3 p-3 rounded-xl bg-white border-2 border-amber-300 font-bold text-amber-900 text-center text-xs sm:text-sm">
+                HUKUM PENAWARAN: "Semakin TINGGI harga suatu barang, semakin BANYAK jumlah barang yang ditawarkan penjual. Sebaliknya, semakin RENDAH harga, semakin SEDIKIT yang ditawarkan (ceteris paribus)."
+              </div>
+            </div>
+            <div class="bg-white p-4 rounded-2xl border border-slate-200">
+              <h5 class="font-bold text-slate-800 mb-2"><i class="fa-solid fa-industry text-amber-600 mr-1.5"></i>Faktor-Faktor yang Memengaruhi Penawaran:</h5>
+              <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs sm:text-sm">
+                <li class="p-2.5 rounded-xl bg-slate-50"><strong>1. Harga Barang:</strong> Harga jual tinggi memberi keuntungan lebih besar bagi penjual.</li>
+                <li class="p-2.5 rounded-xl bg-slate-50"><strong>2. Biaya Produksi:</strong> Biaya bahan baku mahal mengurangi jumlah produksi.</li>
+                <li class="p-2.5 rounded-xl bg-slate-50"><strong>3. Kemajuan Teknologi:</strong> Mesin modern mempercepat dan memperbanyak hasil produksi.</li>
+                <li class="p-2.5 rounded-xl bg-slate-50"><strong>4. Kondisi Alam & Pajak/Subsidi:</strong> Panen raya menambah penawaran; gagal panen menurunkannya.</li>
+              </ul>
+            </div>
+          </div>
+        `,
+        visualSVG: `
+          <svg viewBox="0 0 360 175" class="w-full h-40 rounded-2xl bg-white border border-amber-200">
+            <line x1="55" y1="20" x2="55" y2="140" stroke="#334155" stroke-width="2.5" />
+            <line x1="55" y1="140" x2="320" y2="140" stroke="#334155" stroke-width="2.5" />
+            <text x="22" y="30" fill="#0f172a" font-size="10" font-weight="bold">Harga (P)</text>
+            <text x="255" y="158" fill="#0f172a" font-size="10" font-weight="bold">Jumlah (Q)</text>
+            <!-- Kurva Penawaran (Naik dari kiri bawah ke kanan atas) -->
+            <line x1="85" y1="125" x2="285" y2="35" stroke="#16a34a" stroke-width="4" stroke-linecap="round" />
+            <text x="275" y="30" fill="#15803d" font-size="12" font-weight="bold">S (Supply)</text>
+            <text x="155" y="55" fill="#64748b" font-size="9">Harga Naik → Jual Lebih Banyak</text>
+          </svg>
+        `,
+        summary: "Penawaran berbanding lurus dengan harga (jika harga naik, penawaran bertambah). Kurva penawaran naik dari kiri bawah ke kanan atas.",
+        quiz: {
+          question: "Penggunaan mesin pertanian modern dan pupuk berkualitas membuat hasil panen padi petani meningkat dua kali lipat. Hal ini menyebabkan...",
+          options: ["Penawaran beras bertambah", "Permintaan beras hilang", "Harga mesin turun", "Tidak ada perubahan di pasar"],
+          answer: 0,
+          explanation: "Kemajuan teknologi meningkatkan kapasitas produksi sehingga jumlah barang yang ditawarkan (penawaran) bertambah."
+        }
+      },
+      {
+        id: 6,
+        bab: "BAB 6",
+        title: "Mekanisme Penentuan Harga di Pasar",
+        icon: "fa-scale-balanced",
+        color: "from-purple-600 to-indigo-800",
+        narration: "Bab 6: Mekanisme Penentuan Harga di Pasar. Harga keseimbangan atau equilibrium terbentuk pada titik perpotongan antara kurva permintaan dan kurva penawaran, di mana jumlah barang yang diminta sama dengan jumlah barang yang ditawarkan.",
+        content: `
+          <div class="space-y-4 text-sm md:text-base">
+            <div class="bg-purple-50 p-5 rounded-2xl border-l-4 border-purple-600">
+              <h4 class="font-display font-bold text-lg text-purple-900 mb-1">1. Harga Keseimbangan (Equilibrium Price)</h4>
+              <p class="leading-relaxed"><strong>Mekanisme pasar</strong> adalah proses penentuan tingkat harga berdasarkan kekuatan permintaan dan penawaran. <strong>Harga keseimbangan</strong> terjadi ketika jumlah barang yang diminta pembeli sama persis dengan jumlah barang yang ditawarkan penjual (<strong>Qd = Qs</strong>).</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-red-50 p-4 rounded-2xl border border-red-200">
+                <h5 class="font-bold text-red-900 mb-1"><i class="fa-solid fa-arrow-trend-down mr-1.5"></i>Kelebihan Permintaan (Shortage)</h5>
+                <p class="text-xs sm:text-sm text-slate-700">Terjadi apabila <strong>harga berada di bawah harga keseimbangan</strong>. Pembeli berebut membeli karena murah, tetapi stok penjual sedikit (Qd > Qs). Akibatnya harga akan terdorong naik.</p>
+              </div>
+              <div class="bg-emerald-50 p-4 rounded-2xl border border-emerald-200">
+                <h5 class="font-bold text-emerald-900 mb-1"><i class="fa-solid fa-arrow-trend-up mr-1.5"></i>Kelebihan Penawaran (Surplus)</h5>
+                <p class="text-xs sm:text-sm text-slate-700">Terjadi apabila <strong>harga berada di atas harga keseimbangan</strong>. Penjual menawarkan banyak barang karena mahal, tetapi pembeli sedikit (Qs > Qd). Akibatnya penjual menurunkan harga agar laku.</p>
+              </div>
+            </div>
+          </div>
+        `,
+        visualSVG: `
+          <svg viewBox="0 0 360 180" class="w-full h-44 rounded-2xl bg-white border border-purple-200">
+            <line x1="50" y1="20" x2="50" y2="145" stroke="#334155" stroke-width="2" />
+            <line x1="50" y1="145" x2="320" y2="145" stroke="#334155" stroke-width="2" />
+            <!-- Kurva D & S -->
+            <line x1="80" y1="35" x2="280" y2="130" stroke="#ef4444" stroke-width="3.5" />
+            <line x1="80" y1="130" x2="280" y2="35" stroke="#16a34a" stroke-width="3.5" />
+            <!-- Titik E -->
+            <circle cx="180" cy="82.5" r="7" fill="#facc15" stroke="#0f172a" stroke-width="2" />
+            <line x1="50" y1="82.5" x2="180" y2="82.5" stroke="#6366f1" stroke-dasharray="4,4" />
+            <line x1="180" y1="82.5" x2="180" y2="145" stroke="#6366f1" stroke-dasharray="4,4" />
+            <text x="192" y="86" fill="#4338ca" font-size="11" font-weight="bold">E (Keseimbangan)</text>
+            <text x="18" y="86" fill="#4338ca" font-size="10" font-weight="bold">Pe</text>
+            <text x="174" y="160" fill="#4338ca" font-size="10" font-weight="bold">Qe</text>
+          </svg>
+        `,
+        summary: "Harga keseimbangan terbentuk pada perpotongan kurva permintaan (D) dan kurva penawaran (S) saat jumlah permintaan sama dengan jumlah penawaran.",
+        quiz: {
+          question: "Kondisi di pasar ketika harga barang ditetapkan terlalu tinggi di atas harga keseimbangan sehingga barang dagangan banyak yang tidak laku disebut...",
+          options: ["Kelebihan permintaan (shortage)", "Kelebihan penawaran (surplus)", "Harga keseimbangan", "Inflasi moneter"],
+          answer: 1,
+          explanation: "Saat harga terlalu tinggi, penjual menawarkan banyak barang sementara pembeli enggan membeli (Qs > Qd), yang disebut kelebihan penawaran (surplus)."
+        }
+      },
+      {
+        id: 7,
+        bab: "BAB 7",
+        title: "Perubahan Harga Barang di Pasar",
+        icon: "fa-chart-line",
+        color: "from-rose-500 to-red-700",
+        narration: "Bab 7: Perubahan Harga Barang. Harga barang pokok seperti beras, cabai, telur, dan minyak goreng sering berubah akibat kelangkaan stok, cuaca ekstrem, lonjakan permintaan hari raya, dan biaya distribusi.",
+        content: `
+          <div class="space-y-4 text-sm md:text-base">
+            <div class="bg-rose-50 p-5 rounded-2xl border-l-4 border-rose-500">
+              <h4 class="font-display font-bold text-lg text-rose-900 mb-1">1. Mengapa Harga Barang Sering Berubah?</h4>
+              <p class="leading-relaxed">Harga barang di pasar bersifat dinamis karena dipengaruhi oleh <strong>kelangkaan barang</strong>, <strong>lonjakan permintaan musiman</strong> (seperti bulan Ramadan & Idulfitri), gangguan cuaca/gagal panen, serta kenaikan biaya transportasi bahan bakar.</p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm">
+              <div class="bg-white p-4 rounded-2xl border border-amber-200 shadow-sm">
+                <strong class="text-amber-800 block mb-1"><i class="fa-solid fa-bowl-rice mr-1"></i>1. Harga Beras</strong>
+                <p class="text-slate-700">Naik saat musim kemarau panjang (El Nino) menurunkan hasil panen padi, dan turun kembali saat panen raya tiba.</p>
+              </div>
+              <div class="bg-white p-4 rounded-2xl border border-red-200 shadow-sm">
+                <strong class="text-red-700 block mb-1"><i class="fa-solid fa-pepper-hot mr-1"></i>2. Harga Cabai Merah</strong>
+                <p class="text-slate-700">Sangat sensitif terhadap curah hujan tinggi yang membuat tanaman cabai membusuk sehingga pasokan berkurang drastis.</p>
+              </div>
+              <div class="bg-white p-4 rounded-2xl border border-orange-200 shadow-sm">
+                <strong class="text-orange-700 block mb-1"><i class="fa-solid fa-egg mr-1"></i>3. Harga Telur Ayam</strong>
+                <p class="text-slate-700">Sering naik menjelang hari raya keagamaan karena permintaan pembuatan kue meningkat tajam sementara stok peternak terbatas.</p>
+              </div>
+              <div class="bg-white p-4 rounded-2xl border border-yellow-300 shadow-sm">
+                <strong class="text-yellow-800 block mb-1"><i class="fa-solid fa-bottle-droplet mr-1"></i>4. Harga Minyak Goreng</strong>
+                <p class="text-slate-700">Dipengaruhi oleh harga bahan baku kelapa sawit (CPO) dunia, biaya distribusi, dan kebijakan subsidi pemerintah.</p>
+              </div>
+            </div>
+          </div>
+        `,
+        visualSVG: `
+          <svg viewBox="0 0 360 155" class="w-full h-36 rounded-2xl bg-rose-50 border border-rose-200">
+            <polyline points="30,120 95,105 155,112 220,45 280,65 335,35" fill="none" stroke="#e11d48" stroke-width="4" stroke-linecap="round" />
+            <circle cx="220" cy="45" r="6" fill="#facc15" stroke="#be123c" stroke-width="2" />
+            <text x="165" y="30" fill="#9f1239" font-size="10" font-weight="bold">Lonjakan Harga Hari Raya</text>
+            <text x="35" y="142" fill="#881337" font-size="10" font-weight="bold">Fluktuasi Harga Bahan Pokok di Pasar</text>
+          </svg>
+        `,
+        summary: "Perubahan harga kebutuhan pokok (beras, cabai, telur, minyak goreng) terjadi akibat kelangkaan stok, cuaca, dan lonjakan permintaan musiman.",
+        quiz: {
+          question: "Menjelang Hari Raya Idulfitri, harga telur ayam di pasar sering mengalami kenaikan karena...",
+          options: ["Masyarakat berhenti makan telur", "Permintaan masyarakat meningkat tajam untuk membuat kue dan hidangan", "Ayam bertelur sepuluh kali lebih banyak", "Uang tidak berlaku di pasar"],
+          answer: 1,
+          explanation: "Kenaikan permintaan yang melonjak tajam dalam waktu singkat mendorong harga barang naik."
+        }
+      }
+    ];
+
+    /*************************************************************************
+     * 4. NAVIGASI UTAMA & DASHBOARD 7 MENU
+     *************************************************************************/
+    function startLearning() {
+      initAudioCtx();
+      playSFX('win');
+      document.getElementById('welcome-screen').classList.add('hidden');
+      document.getElementById('main-app').classList.remove('hidden');
+      navigateTo('dashboard');
+      speakText("Selamat datang di Menu Utama Pasar Pintar! Pilih salah satu dari tujuh menu belajar di bawah ini.");
+    }
+
+    function navigateTo(page) {
+      stopSpeech();
+      playSFX('click');
+      appState.currentPage = page;
+      saveState();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      const container = document.getElementById('app-content');
+      container.classList.remove('page-transition');
+      void container.offsetWidth;
+      container.classList.add('page-transition');
+
+      switch (page) {
+        case 'dashboard': renderDashboard(container); break;
+        case 'materi': renderMateri(container); break;
+        case 'simulasi': renderSimulasi(container); break;
+        case 'praktikum': renderPraktikum(container); break;
+        case 'game': renderGameHub(container); break;
+        case 'lkpd': renderLKPD(container); break;
+        case 'evaluasi': renderEvaluasi(container); break;
+        case 'pengembang': renderPengembang(container); break;
+        default: renderDashboard(container);
+      }
+    }
+
+    function renderDashboard(container) {
+      currentNarrationText = "Ini adalah Dashboard Utama Pasar Pintar. Tersedia tujuh menu lengkap: Materi tujuh bab, Simulasi Harga dan Pasar, Praktikum Mini Market Day, Game Edukasi PIKO Challenge, LKPD Investigasi Kelompok, Evaluasi tiga puluh soal, dan Profil Pengembang.";
+      const pct = calculateProgress();
+      const totalStars = Object.values(appState.gameStars).reduce((a, b) => a + b, 0);
+
+      const menus = [
+        { id: 'materi', title: '1. MATERI', sub: '7 Bab Harga & Pasar', desc: 'Pelajari pengertian harga, fungsi pasar, jenis pasar, hukum permintaan-penawaran, dan keseimbangan.', icon: 'fa-book-open', grad: 'from-brandOrange-500 to-brandOrange-700', badge: `${appState.completedBabs.length}/7 Bab` },
+        { id: 'simulasi', title: '2. SIMULASI', sub: 'Grafik Kurva Interaktif', desc: 'Berperan sebagai Penjual atau Pembeli, geser slider harga, dan amati kurva keseimbangan pasar.', icon: 'fa-chart-line', grad: 'from-brandBlue-500 to-brandBlue-900', badge: '3 Simulasi Kurva' },
+        { id: 'praktikum', title: '3. PRAKTIKUM', sub: 'Mini Market Day', desc: 'Simulasi transaksi jual beli nyata di kelas, tawar-menawar, hitung omzet & keuntungan.', icon: 'fa-cash-register', grad: 'from-brandGreen-500 to-brandGreen-700', badge: 'Laporan Digital' },
+        { id: 'game', title: '4. GAME EDUKASI', sub: 'PIKO Challenge (5 Game)', desc: 'Tebak harga, klasifikasi pasar, pasangkan konsep, benar/salah, dan tantangan kurva!', icon: 'fa-gamepad', grad: 'from-amber-400 to-orange-600', badge: `${totalStars}/15 Bintang` },
+        { id: 'lkpd', title: '5. LKPD', sub: 'Investigasi Kelompok', desc: 'Diskusi kelompok studi kasus harga telur menjelang hari raya, tabel & grafik interaktif.', icon: 'fa-file-signature', grad: 'from-indigo-500 to-purple-700', badge: 'Cetak & PDF' },
+        { id: 'evaluasi', title: '6. EVALUASI', sub: '30 Soal + Sertifikat', desc: '15 PG, 5 Benar/Salah, 5 PG Kompleks, 5 Menjodohkan. Raih nilai ≥ 80 untuk Sertifikat!', icon: 'fa-award', grad: 'from-rose-500 to-red-700', badge: appState.evalResult ? `Nilai: ${appState.evalResult.score}` : '30 Soal' },
+        { id: 'pengembang', title: '7. PENGEMBANG', sub: 'Profil & Identitas', desc: 'Profil Tria Nova Nadia, S.E. dari UPTD SMP Negeri 2 Kalianda dan tujuan media.', icon: 'fa-id-badge', grad: 'from-sky-500 to-cyan-700', badge: 'SMPN 2 Kalianda' }
+      ];
+
+      container.innerHTML = `
+        <!-- Banner Sambutan PIKO -->
+        <div class="bg-white rounded-3xl p-5 sm:p-7 shadow-lg border-2 border-brandOrange-200 mb-7 flex flex-col lg:flex-row items-center justify-between gap-6">
+          <div class="flex items-center gap-4">
+            <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-brandOrange-100 flex items-center justify-center shrink-0 border-2 border-brandOrange-400 animate-piko">
+              <i class="fa-solid fa-robot text-3xl sm:text-4xl text-brandOrange-600"></i>
+            </div>
+            <div>
+              <span class="px-3 py-1 rounded-full bg-brandYellow-300 text-slate-900 font-extrabold text-xs">DASHBOARD PASAR PINTAR</span>
+              <h2 class="text-2xl sm:text-3xl font-display font-bold text-slate-900 mt-1">Halo, Calon Ekonom Cerdas!</h2>
+              <p class="text-sm sm:text-base text-slate-600">Pilih menu petualangan belajar ekonomi di bawah ini bersama PIKO.</p>
+            </div>
+          </div>
+
+          <div class="w-full lg:w-80 bg-gradient-to-br from-brandOrange-50 to-brandYellow-100 p-4 rounded-2xl border border-brandOrange-200">
+            <div class="flex justify-between items-center mb-1.5">
+              <span class="text-xs font-extrabold text-brandOrange-700 uppercase">Progres Belajar</span>
+              <span class="text-sm font-black text-brandGreen-700">${pct}%</span>
+            </div>
+            <div class="w-full h-3.5 bg-white rounded-full overflow-hidden border border-brandOrange-200">
+              <div class="h-full bg-gradient-to-r from-brandOrange-500 to-brandGreen-500 transition-all duration-500" style="width: ${pct}%"></div>
+            </div>
+            <div class="flex justify-between text-[11px] font-bold text-slate-600 mt-2">
+              <span><i class="fa-solid fa-book text-brandOrange-500"></i> ${appState.completedBabs.length}/7 Bab</span>
+              <span><i class="fa-solid fa-star text-amber-500"></i> ${totalStars} Bintang</span>
+              <span><i class="fa-solid fa-trophy text-rose-500"></i> ${appState.evalResult ? appState.evalResult.score : 'Evaluasi'}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Grid 7 Menu Utama -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+          ${menus.map(m => `
+            <div onclick="navigateTo('${m.id}')" class="group cursor-pointer bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-2xl border-2 border-white hover:border-brandOrange-400 transition-all duration-300 flex flex-col justify-between transform hover:-translate-y-1.5">
+              <div>
+                <div class="bg-gradient-to-r ${m.grad} p-5 text-white relative overflow-hidden">
+                  <i class="fa-solid ${m.icon} absolute -right-3 -bottom-3 text-7xl opacity-20 group-hover:scale-110 transition-transform"></i>
+                  <div class="flex items-center justify-between mb-3">
+                    <div class="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center text-2xl">
+                      <i class="fa-solid ${m.icon}"></i>
+                    </div>
+                    <span class="px-2.5 py-1 rounded-full bg-black/25 text-[11px] font-bold">${m.badge}</span>
+                  </div>
+                  <h3 class="font-display font-bold text-xl">${m.title}</h3>
+                  <p class="text-xs text-white/90 font-semibold">${m.sub}</p>
+                </div>
+                <div class="p-4">
+                  <p class="text-sm text-slate-600 leading-relaxed">${m.desc}</p>
+                </div>
+              </div>
+              <div class="px-4 pb-4">
+                <button class="w-full py-2.5 rounded-2xl bg-brandOrange-50 group-hover:bg-brandOrange-500 text-brandOrange-700 group-hover:text-white font-bold text-sm transition flex items-center justify-center gap-2">
+                  Masuk Menu <i class="fa-solid fa-arrow-right"></i>
+                </button>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    /*************************************************************************
+     * 5. MENU 1: MATERI PEMBELAJARAN (7 BAB LENGKAP)
+     *************************************************************************/
+    function renderMateri(container) {
+      const idx = appState.activeBab || 0;
+      const bab = MATERI_DATA[idx];
+      currentNarrationText = bab.narration;
+      const isDone = appState.completedBabs.includes(bab.id);
+
+      container.innerHTML = `
+        <div class="space-y-6">
+          <!-- Tab Navigasi 7 Bab -->
+          <div class="bg-white p-3 rounded-3xl shadow-md border border-brandOrange-200 flex overflow-x-auto gap-2">
+            ${MATERI_DATA.map((item, i) => {
+              const done = appState.completedBabs.includes(item.id);
+              const active = i === idx;
+              return `
+                <button onclick="selectBab(${i})" class="shrink-0 px-4 py-2.5 rounded-2xl font-bold text-xs sm:text-sm flex items-center gap-2 transition ${active ? 'bg-brandOrange-500 text-white shadow-md' : 'bg-brandOrange-50 hover:bg-brandOrange-100 text-brandOrange-800'}">
+                  <span>${item.bab}</span>
+                  ${done ? '<i class="fa-solid fa-circle-check text-brandGreen-500"></i>' : ''}
+                </button>
+              `;
+            }).join('')}
+          </div>
+
+          <!-- Kartu Materi -->
+          <div class="bg-white rounded-3xl shadow-xl border-2 border-brandOrange-100 overflow-hidden">
+            <div class="bg-gradient-to-r ${bab.color} p-6 sm:p-8 text-white flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+              <div>
+                <span class="px-3 py-1 rounded-full bg-white/20 text-xs font-extrabold"><i class="fa-solid ${bab.icon} mr-1"></i> ${bab.bab} DARI 7 BAB</span>
+                <h2 class="text-2xl sm:text-3xl font-display font-bold mt-2">${bab.title}</h2>
+              </div>
+              <div class="flex items-center gap-2">
+                <button onclick="speakCurrentPage()" class="btn-3d px-4 py-2.5 rounded-2xl bg-brandYellow-400 text-slate-900 font-bold text-sm flex items-center gap-2">
+                  <i class="fa-solid fa-volume-high"></i> Dengarkan Narasi
+                </button>
+                ${isDone ? `<span class="px-3 py-2 rounded-2xl bg-brandGreen-500 text-white font-bold text-xs"><i class="fa-solid fa-check mr-1"></i>Selesai</span>` : ''}
+              </div>
+            </div>
+
+            <div class="p-5 sm:p-8 grid grid-cols-1 lg:grid-cols-12 gap-6">
+              <div class="lg:col-span-8 space-y-5">
+                ${bab.content}
+              </div>
+              <div class="lg:col-span-4 space-y-5">
+                <div class="bg-slate-50 p-4 rounded-2xl border-2 border-slate-200">
+                  <h4 class="font-display font-bold text-sm text-brandBlue-900 mb-2"><i class="fa-solid fa-chart-simple mr-1.5 text-brandOrange-500"></i>Ilustrasi & Grafik Konsep</h4>
+                  ${bab.visualSVG}
+                </div>
+                <div class="bg-brandYellow-100/80 p-4 rounded-2xl border-2 border-brandYellow-400">
+                  <h4 class="font-display font-bold text-sm text-amber-900 mb-1.5"><i class="fa-solid fa-bookmark mr-1.5 text-amber-600"></i>Ringkasan ${bab.bab}</h4>
+                  <p class="text-xs sm:text-sm text-slate-800 leading-relaxed">${bab.summary}</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Kuis Singkat Bab -->
+            <div class="bg-brandBlue-50/70 p-5 sm:p-8 border-t-2 border-brandBlue-100">
+              <div class="max-w-3xl mx-auto bg-white p-5 sm:p-6 rounded-2xl border-2 border-brandBlue-300 shadow-sm">
+                <span class="px-3 py-1 rounded-full bg-brandBlue-600 text-white text-xs font-bold">KUIS SINGKAT ${bab.bab}</span>
+                <h4 class="font-bold text-base sm:text-lg text-slate-800 mt-3 mb-4">${bab.quiz.question}</h4>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  ${bab.quiz.options.map((opt, optIdx) => `
+                    <button onclick="checkBabQuiz(${optIdx})" id="bab-opt-${optIdx}" class="text-left p-3.5 rounded-xl border-2 border-slate-200 hover:border-brandOrange-500 hover:bg-brandOrange-50 font-semibold text-sm transition flex items-center gap-2.5">
+                      <span class="w-7 h-7 rounded-lg bg-brandOrange-100 text-brandOrange-700 font-bold flex items-center justify-center shrink-0">${String.fromCharCode(65 + optIdx)}</span>
+                      <span>${opt}</span>
+                    </button>
+                  `).join('')}
+                </div>
+                <div id="bab-quiz-feedback" class="hidden mt-4 p-4 rounded-xl text-sm font-semibold"></div>
+              </div>
+            </div>
+
+            <!-- Navigasi Sebelumnya & Selanjutnya -->
+            <div class="p-5 bg-white border-t border-slate-200 flex flex-wrap items-center justify-between gap-3">
+              <button onclick="selectBab(${idx - 1})" ${idx === 0 ? 'disabled class="opacity-40 cursor-not-allowed px-5 py-3 rounded-2xl bg-slate-200 text-slate-600 font-bold text-sm"' : 'class="btn-3d px-5 py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-sm"'}>
+                <i class="fa-solid fa-arrow-left mr-2"></i> Sebelumnya
+              </button>
+              <button onclick="completeBabAndNext()" class="btn-3d px-6 py-3 rounded-2xl bg-brandGreen-600 hover:bg-brandGreen-700 text-white font-bold text-sm">
+                ${idx < MATERI_DATA.length - 1 ? 'Tandai Selesai & Bab Selanjutnya <i class="fa-solid fa-arrow-right ml-2"></i>' : 'Selesai Materi & Masuk Simulasi <i class="fa-solid fa-chart-line ml-2"></i>'}
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function selectBab(i) {
+      if (i < 0 || i >= MATERI_DATA.length) return;
+      appState.activeBab = i;
+      renderMateri(document.getElementById('app-content'));
+    }
+
+    function completeBabAndNext() {
+      const id = MATERI_DATA[appState.activeBab].id;
+      if (!appState.completedBabs.includes(id)) {
+        appState.completedBabs.push(id);
+        saveState();
+      }
+      playSFX('correct');
+      if (appState.activeBab < MATERI_DATA.length - 1) {
+        selectBab(appState.activeBab + 1);
+      } else {
+        showToast('Hebat! Seluruh 7 Bab Materi telah selesai!', 'success');
+        navigateTo('simulasi');
+      }
+    }
+
+    function checkBabQuiz(selectedIdx) {
+      const bab = MATERI_DATA[appState.activeBab];
+      const fb = document.getElementById('bab-quiz-feedback');
+      const ok = selectedIdx === bab.quiz.answer;
+
+      bab.quiz.options.forEach((_, i) => {
+        const btn = document.getElementById(`bab-opt-${i}`);
+        btn.classList.remove('border-brandGreen-500', 'bg-brandGreen-50', 'border-red-500', 'bg-red-50');
+        if (i === bab.quiz.answer) btn.classList.add('border-brandGreen-500', 'bg-brandGreen-50');
+        else if (i === selectedIdx && !ok) btn.classList.add('border-red-500', 'bg-red-50');
+      });
+
+      fb.classList.remove('hidden', 'bg-brandGreen-100', 'text-brandGreen-900', 'bg-red-100', 'text-red-900');
+      if (ok) {
+        playSFX('correct');
+        fb.classList.add('bg-brandGreen-100', 'text-brandGreen-900');
+        fb.innerHTML = `<i class="fa-solid fa-circle-check text-brandGreen-600 mr-2"></i><strong>Jawaban Tepat!</strong> ${bab.quiz.explanation}`;
+        if (!appState.completedBabs.includes(bab.id)) {
+          appState.completedBabs.push(bab.id);
+          saveState();
+        }
+      } else {
+        playSFX('wrong');
+        fb.classList.add('bg-red-100', 'text-red-900');
+        fb.innerHTML = `<i class="fa-solid fa-circle-xmark text-red-600 mr-2"></i><strong>Kurang Tepat.</strong> ${bab.quiz.explanation}`;
+      }
+    }
+
+    /*************************************************************************
+     * 6. MENU 2: SIMULASI PASAR ("BAGAIMANA HARGA TERBENTUK?")
+     * - Pilihan Peran: PENJUAL atau PEMBELI
+     * - Simulasi 1: Permintaan (Rp10.000->100kg, Rp12.000->80kg, Rp14.000->60kg, Rp16.000->40kg)
+     * - Simulasi 2: Penawaran (Rp10.000->40kg, Rp12.000->60kg, Rp14.000->80kg, Rp16.000->100kg)
+     * - Simulasi 3: Harga Keseimbangan (Equilibrium Rp13.000 pada 70 kg + kustom)
+     *************************************************************************/
+    let simRole = 'pembeli'; // 'pembeli' atau 'penjual'
+    let simTab = 'sim1'; // 'sim1', 'sim2', 'sim3'
+    let sim1Price = 12000;
+    let sim2Price = 12000;
+    let sim3Price = 13000;
+    let sim3DemandShift = 0; // pergeseran permintaan (-20 sampai +20 kg)
+    let sim3SupplyShift = 0; // pergeseran penawaran (-20 sampai +20 kg)
+
+    function renderSimulasi(container) {
+      appState.simVisited[simTab] = true;
+      saveState();
+
+      currentNarrationText = "Simulasi Pasar: Bagaimana Harga Terbentuk? Pilih peranmu sebagai Penjual atau Pembeli, lalu geser slider harga untuk mengamati perubahan kurva permintaan, kurva penawaran, dan titik harga keseimbangan!";
+
+      container.innerHTML = `
+        <div class="space-y-6">
+          <!-- Banner Simulasi & Pilihan Peran -->
+          <div class="bg-gradient-to-r from-brandBlue-600 via-brandBlue-500 to-brandGreen-600 rounded-3xl p-6 text-white shadow-lg flex flex-col lg:flex-row items-center justify-between gap-4">
+            <div>
+              <span class="px-3 py-1 rounded-full bg-brandYellow-400 text-slate-900 font-extrabold text-xs">LABORATORIUM EKONOMI INTERAKTIF</span>
+              <h2 class="text-2xl sm:text-3xl font-display font-bold mt-1">SIMULASI PASAR – BAGAIMANA HARGA TERBENTUK?</h2>
+              <p class="text-sm text-sky-100">Pilih peranmu dan ubah harga barang (Beras / Gula Pasir) untuk melihat hukum ekonomi bekerja!</p>
+            </div>
+
+            <!-- Pilihan Peran Penjual / Pembeli -->
+            <div class="bg-white/20 backdrop-blur-sm p-2 rounded-2xl flex items-center gap-2 shrink-0">
+              <span class="text-xs font-bold px-2">Peranmu:</span>
+              <button onclick="setSimRole('pembeli')" class="px-4 py-2 rounded-xl font-bold text-xs sm:text-sm transition ${simRole === 'pembeli' ? 'bg-brandYellow-400 text-slate-900 shadow' : 'text-white hover:bg-white/10'}">
+                <i class="fa-solid fa-bag-shopping mr-1"></i> PEMBELI
+              </button>
+              <button onclick="setSimRole('penjual')" class="px-4 py-2 rounded-xl font-bold text-xs sm:text-sm transition ${simRole === 'penjual' ? 'bg-brandOrange-500 text-white shadow' : 'text-white hover:bg-white/10'}">
+                <i class="fa-solid fa-store mr-1"></i> PENJUAL
+              </button>
+            </div>
+          </div>
+
+          <!-- Navigasi 3 Tab Simulasi -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <button onclick="setSimTab('sim1')" class="p-4 rounded-2xl border-2 text-left transition ${simTab === 'sim1' ? 'border-red-500 bg-red-50 shadow-md' : 'border-slate-200 bg-white hover:border-red-300'}">
+              <span class="text-xs font-extrabold text-red-600">SIMULASI 1</span>
+              <h3 class="font-display font-bold text-base sm:text-lg text-slate-900">Kurva Permintaan (Demand)</h3>
+            </button>
+            <button onclick="setSimTab('sim2')" class="p-4 rounded-2xl border-2 text-left transition ${simTab === 'sim2' ? 'border-brandGreen-600 bg-brandGreen-50 shadow-md' : 'border-slate-200 bg-white hover:border-brandGreen-300'}">
+              <span class="text-xs font-extrabold text-brandGreen-600">SIMULASI 2</span>
+              <h3 class="font-display font-bold text-base sm:text-lg text-slate-900">Kurva Penawaran (Supply)</h3>
+            </button>
+            <button onclick="setSimTab('sim3')" class="p-4 rounded-2xl border-2 text-left transition ${simTab === 'sim3' ? 'border-purple-600 bg-purple-50 shadow-md' : 'border-slate-200 bg-white hover:border-purple-300'}">
+              <span class="text-xs font-extrabold text-purple-600">SIMULASI 3</span>
+              <h3 class="font-display font-bold text-base sm:text-lg text-slate-900">Harga Keseimbangan Pasar</h3>
+            </button>
+          </div>
+
+          <!-- Area Konten Simulasi Aktif -->
+          <div id="sim-active-panel" class="bg-white rounded-3xl p-6 sm:p-8 shadow-xl border-2 border-slate-200">
+            ${renderActiveSimContent()}
+          </div>
+        </div>
+      `;
+    }
+
+    function setSimRole(r) {
+      playSFX('coin');
+      simRole = r;
+      renderSimulasi(document.getElementById('app-content'));
+      showToast(`Kamu sekarang berperan sebagai ${r.toUpperCase()} di pasar!`, 'info');
+    }
+
+    function setSimTab(t) {
+      playSFX('click');
+      simTab = t;
+      renderSimulasi(document.getElementById('app-content'));
+    }
+
+    function formatRp(num) {
+      return 'Rp' + num.toLocaleString('id-ID');
+    }
+
+    function renderActiveSimContent() {
+      // Rumus Permintaan Konsisten dengan contoh data:
+      // P = 10.000 -> Qd = 100 kg; P = 12.000 -> 80 kg; P = 14.000 -> 60 kg; P = 16.000 -> 40 kg
+      // Formula: Qd = 200 - (P / 100)
+      if (simTab === 'sim1') {
+        const qd = 200 - (sim1Price / 100);
+        // Koordinat SVG (X: 60..340 untuk Q 0..120, Y: 200..30 untuk P 8000..18000)
+        const cx = 60 + (qd / 120) * 280;
+        const cy = 200 - ((sim1Price - 8000) / 10000) * 170;
+
+        return `
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+            <div class="lg:col-span-5 space-y-4">
+              <div class="p-3.5 rounded-2xl bg-red-50 border border-red-200">
+                <span class="text-xs font-extrabold text-red-700 uppercase">Perspektif ${simRole.toUpperCase()}:</span>
+                <p class="text-xs sm:text-sm text-slate-700 mt-1">
+                  ${simRole === 'pembeli'
+                    ? 'Sebagai <strong>Pembeli</strong>, ketika harga barang murah (Rp10.000), kamu sanggup membeli hingga 100 kg. Namun jika harga naik ke Rp16.000, kamu mengurangi pembelian menjadi 40 kg.'
+                    : 'Sebagai <strong>Penjual</strong>, kamu mengamati bahwa pembeli akan memborong barang saat harga turun, dan mengurangi belanja saat harga naik.'}
+                </p>
+              </div>
+
+              <!-- Slider Harga -->
+              <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+                <div class="flex justify-between items-center">
+                  <label class="font-bold text-sm text-slate-800">Geser Harga Barang / kg:</label>
+                  <span class="px-3 py-1 rounded-xl bg-brandOrange-500 text-white font-display font-bold text-base">${formatRp(sim1Price)}</span>
+                </div>
+                <input type="range" min="10000" max="16000" step="1000" value="${sim1Price}" oninput="updateSim1(this.value)" class="w-full accent-red-600 cursor-pointer" />
+                <div class="flex justify-between text-[11px] font-bold text-slate-500">
+                  <span>Rp10.000</span><span>Rp12.000</span><span>Rp14.000</span><span>Rp16.000</span>
+                </div>
+              </div>
+
+              <!-- Tabel Skedul Permintaan -->
+              <table class="w-full text-xs text-center border-collapse rounded-xl overflow-hidden">
+                <thead>
+                  <tr class="bg-red-600 text-white"><th class="p-2">Harga (P)</th><th class="p-2">Permintaan (Qd)</th></tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200 bg-white">
+                  ${[10000, 12000, 14000, 16000].map(p => `
+                    <tr class="${sim1Price === p ? 'bg-brandYellow-100 font-extrabold' : ''}">
+                      <td class="p-2">${formatRp(p)}</td>
+                      <td class="p-2">${200 - p / 100} kg</td>
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>
+
+              <div class="flex gap-2">
+                <button onclick="updateSim1(10000)" class="btn-3d px-4 py-2 rounded-xl bg-brandGreen-600 text-white font-bold text-xs"><i class="fa-solid fa-play mr-1"></i> Mulai Harga Terendah</button>
+                <button onclick="updateSim1(12000)" class="btn-3d px-4 py-2 rounded-xl bg-slate-200 text-slate-800 font-bold text-xs"><i class="fa-solid fa-rotate-left mr-1"></i> Reset</button>
+              </div>
+            </div>
+
+            <!-- Grafik SVG Kurva Permintaan -->
+            <div class="lg:col-span-7 space-y-4">
+              <div class="bg-slate-50 p-4 rounded-2xl border-2 border-red-200">
+                <h4 class="font-display font-bold text-center text-red-800 mb-2">GRAFIK KURVA PERMINTAAN (D)</h4>
+                <svg viewBox="0 0 380 230" class="w-full h-auto bg-white rounded-xl border border-slate-200">
+                  <!-- Grid & Sumbu -->
+                  <line x1="60" y1="25" x2="60" y2="200" stroke="#334155" stroke-width="2.5" />
+                  <line x1="60" y1="200" x2="350" y2="200" stroke="#334155" stroke-width="2.5" />
+                  <text x="12" y="20" fill="#0f172a" font-size="10" font-weight="bold">Harga (Rp)</text>
+                  <text x="275" y="220" fill="#0f172a" font-size="10" font-weight="bold">Permintaan (kg)</text>
+                  <!-- Label Sumbu Y -->
+                  <text x="10" y="68" fill="#64748b" font-size="9">16.000</text>
+                  <text x="10" y="102" fill="#64748b" font-size="9">14.000</text>
+                  <text x="10" y="136" fill="#64748b" font-size="9">12.000</text>
+                  <text x="10" y="170" fill="#64748b" font-size="9">10.000</text>
+                  <!-- Label Sumbu X -->
+                  <text x="148" y="213" fill="#64748b" font-size="9">40</text>
+                  <text x="195" y="213" fill="#64748b" font-size="9">60</text>
+                  <text x="242" y="213" fill="#64748b" font-size="9">80</text>
+                  <text x="288" y="213" fill="#64748b" font-size="9">100</text>
+
+                  <!-- Garis Kurva D (dari P=16.000,Q=40 ke P=10.000,Q=100) -->
+                  <line x1="153" y1="64" x2="293" y2="166" stroke="#ef4444" stroke-width="4" stroke-linecap="round" />
+                  <text x="300" y="170" fill="#dc2626" font-size="12" font-weight="bold">Kurva D</text>
+
+                  <!-- Garis Bantu & Titik Aktif -->
+                  <line x1="60" y1="${cy}" x2="${cx}" y2="${cy}" stroke="#f97316" stroke-width="1.5" stroke-dasharray="4,4" />
+                  <line x1="${cx}" y1="${cy}" x2="${cx}" y2="200" stroke="#f97316" stroke-width="1.5" stroke-dasharray="4,4" />
+                  <circle cx="${cx}" cy="${cy}" r="8" fill="#facc15" stroke="#dc2626" stroke-width="3" />
+                  <text x="${cx + 10}" y="${cy - 8}" fill="#0f172a" font-size="10" font-weight="bold">(${qd} kg, ${formatRp(sim1Price)})</text>
+                </svg>
+              </div>
+
+              <!-- Kesimpulan Otomatis & Refleksi -->
+              <div class="p-4 rounded-2xl bg-brandYellow-100 border border-brandYellow-400 text-xs sm:text-sm space-y-1.5">
+                <p class="font-bold text-amber-950"><i class="fa-solid fa-robot mr-1.5"></i>Kesimpulan Otomatis PIKO:</p>
+                <p>Pada tingkat harga <strong>${formatRp(sim1Price)}/kg</strong>, jumlah barang yang diminta konsumen adalah <strong>${qd} kg</strong>. Terbukti kurva permintaan miring dari kiri atas ke kanan bawah (berbanding terbalik dengan harga).</p>
+                <p class="text-amber-900 italic pt-1"><strong>Pertanyaan Refleksi:</strong> Jika uang sakumu tetap, mengapa kamu cenderung membeli lebih banyak barang ketika sedang ada diskon harga?</p>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      // SIMULASI 2: PENAWARAN
+      // Formula: P = 10.000 -> Qs = 40 kg; P = 12.000 -> 60 kg; P = 14.000 -> 80 kg; P = 16.000 -> 100 kg
+      // Qs = (P / 100) - 60
+      if (simTab === 'sim2') {
+        const qs = (sim2Price / 100) - 60;
+        const cx = 60 + (qs / 120) * 280;
+        const cy = 200 - ((sim2Price - 8000) / 10000) * 170;
+
+        return `
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+            <div class="lg:col-span-5 space-y-4">
+              <div class="p-3.5 rounded-2xl bg-brandGreen-50 border border-brandGreen-200">
+                <span class="text-xs font-extrabold text-brandGreen-700 uppercase">Perspektif ${simRole.toUpperCase()}:</span>
+                <p class="text-xs sm:text-sm text-slate-700 mt-1">
+                  ${simRole === 'penjual'
+                    ? 'Sebagai <strong>Penjual</strong>, saat harga naik ke Rp16.000/kg, kamu bersemangat menawarkan stok lebih banyak (100 kg) demi meraih keuntungan lebih besar!'
+                    : 'Sebagai <strong>Pembeli</strong>, kamu melihat penjual menyediakan stok barang jauh lebih melimpah saat harga jual di pasar tinggi.'}
+                </p>
+              </div>
+
+              <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+                <div class="flex justify-between items-center">
+                  <label class="font-bold text-sm text-slate-800">Geser Harga Jual / kg:</label>
+                  <span class="px-3 py-1 rounded-xl bg-brandGreen-600 text-white font-display font-bold text-base">${formatRp(sim2Price)}</span>
+                </div>
+                <input type="range" min="10000" max="16000" step="1000" value="${sim2Price}" oninput="updateSim2(this.value)" class="w-full accent-brandGreen-600 cursor-pointer" />
+                <div class="flex justify-between text-[11px] font-bold text-slate-500">
+                  <span>Rp10.000</span><span>Rp12.000</span><span>Rp14.000</span><span>Rp16.000</span>
+                </div>
+              </div>
+
+              <table class="w-full text-xs text-center border-collapse rounded-xl overflow-hidden">
+                <thead>
+                  <tr class="bg-brandGreen-600 text-white"><th class="p-2">Harga (P)</th><th class="p-2">Penawaran (Qs)</th></tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200 bg-white">
+                  ${[10000, 12000, 14000, 16000].map(p => `
+                    <tr class="${sim2Price === p ? 'bg-brandYellow-100 font-extrabold' : ''}">
+                      <td class="p-2">${formatRp(p)}</td>
+                      <td class="p-2">${(p / 100) - 60} kg</td>
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>
+
+              <div class="flex gap-2">
+                <button onclick="updateSim2(16000)" class="btn-3d px-4 py-2 rounded-xl bg-brandOrange-500 text-white font-bold text-xs"><i class="fa-solid fa-play mr-1"></i> Simulasi Harga Tertinggi</button>
+                <button onclick="updateSim2(12000)" class="btn-3d px-4 py-2 rounded-xl bg-slate-200 text-slate-800 font-bold text-xs"><i class="fa-solid fa-rotate-left mr-1"></i> Reset</button>
+              </div>
+            </div>
+
+            <div class="lg:col-span-7 space-y-4">
+              <div class="bg-slate-50 p-4 rounded-2xl border-2 border-brandGreen-200">
+                <h4 class="font-display font-bold text-center text-brandGreen-800 mb-2">GRAFIK KURVA PENAWARAN (S)</h4>
+                <svg viewBox="0 0 380 230" class="w-full h-auto bg-white rounded-xl border border-slate-200">
+                  <line x1="60" y1="25" x2="60" y2="200" stroke="#334155" stroke-width="2.5" />
+                  <line x1="60" y1="200" x2="350" y2="200" stroke="#334155" stroke-width="2.5" />
+                  <text x="12" y="20" fill="#0f172a" font-size="10" font-weight="bold">Harga (Rp)</text>
+                  <text x="275" y="220" fill="#0f172a" font-size="10" font-weight="bold">Penawaran (kg)</text>
+                  <text x="10" y="68" fill="#64748b" font-size="9">16.000</text>
+                  <text x="10" y="102" fill="#64748b" font-size="9">14.000</text>
+                  <text x="10" y="136" fill="#64748b" font-size="9">12.000</text>
+                  <text x="10" y="170" fill="#64748b" font-size="9">10.000</text>
+                  <text x="148" y="213" fill="#64748b" font-size="9">40</text>
+                  <text x="195" y="213" fill="#64748b" font-size="9">60</text>
+                  <text x="242" y="213" fill="#64748b" font-size="9">80</text>
+                  <text x="288" y="213" fill="#64748b" font-size="9">100</text>
+
+                  <!-- Garis Kurva S (dari P=10.000,Q=40 ke P=16.000,Q=100) -->
+                  <line x1="153" y1="166" x2="293" y2="64" stroke="#16a34a" stroke-width="4" stroke-linecap="round" />
+                  <text x="300" y="64" fill="#15803d" font-size="12" font-weight="bold">Kurva S</text>
+
+                  <line x1="60" y1="${cy}" x2="${cx}" y2="${cy}" stroke="#0284c7" stroke-width="1.5" stroke-dasharray="4,4" />
+                  <line x1="${cx}" y1="${cy}" x2="${cx}" y2="200" stroke="#0284c7" stroke-width="1.5" stroke-dasharray="4,4" />
+                  <circle cx="${cx}" cy="${cy}" r="8" fill="#facc15" stroke="#15803d" stroke-width="3" />
+                  <text x="${cx + 10}" y="${cy + 14}" fill="#0f172a" font-size="10" font-weight="bold">(${qs} kg, ${formatRp(sim2Price)})</text>
+                </svg>
+              </div>
+
+              <div class="p-4 rounded-2xl bg-brandGreen-50 border border-brandGreen-300 text-xs sm:text-sm space-y-1.5">
+                <p class="font-bold text-brandGreen-900"><i class="fa-solid fa-robot mr-1.5"></i>Kesimpulan Otomatis PIKO:</p>
+                <p>Pada harga <strong>${formatRp(sim2Price)}/kg</strong>, jumlah barang yang ditawarkan penjual adalah <strong>${qs} kg</strong>. Kurva penawaran bergerak naik dari kiri bawah ke kanan atas (berbanding lurus dengan harga).</p>
+                <p class="text-brandGreen-800 italic pt-1"><strong>Pertanyaan Refleksi:</strong> Mengapa petani lebih semangat memanen dan menjual hasil kebunnya saat harga jual di pasar sedang tinggi?</p>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      // SIMULASI 3: HARGA KESEIMBANGAN (EQUILIBRIUM)
+      // Dasar: Qd = 200 - P/100 + sim3DemandShift
+      //        Qs = P/100 - 60 + sim3SupplyShift
+      // Keseimbangan: Qd = Qs => 200 - P/100 + dS = P/100 - 60 + sS
+      // 2P/100 = 260 + dS - sS => Pe = ((260 + dS - sS) / 2) * 100
+      const qd = Math.max(0, Math.round(200 - (sim3Price / 100) + sim3DemandShift));
+      const qs = Math.max(0, Math.round((sim3Price / 100) - 60 + sim3SupplyShift));
+      const eqPrice = Math.round(((260 + sim3DemandShift - sim3SupplyShift) / 2) * 100);
+      const eqQty = Math.round(200 - (eqPrice / 100) + sim3DemandShift);
+
+      let marketStatus = '';
+      if (qd === qs) {
+        marketStatus = `<span class="px-3 py-1 rounded-full bg-brandGreen-500 text-white font-extrabold text-xs">TITIK KESEIMBANGAN TERCAPAI (Qd = Qs)</span>`;
+      } else if (qd > qs) {
+        marketStatus = `<span class="px-3 py-1 rounded-full bg-red-500 text-white font-extrabold text-xs">KELEBIHAN PERMINTAAN (Shortage: ${qd - qs} kg)</span>`;
+      } else {
+        marketStatus = `<span class="px-3 py-1 rounded-full bg-amber-500 text-white font-extrabold text-xs">KELEBIHAN PENAWARAN (Surplus: ${qs - qd} kg)</span>`;
+      }
+
+      // Koordinat SVG Kurva D & S dinamis
+      const dX1 = 60 + (Math.max(0, 40 + sim3DemandShift) / 140) * 280; // P=16000
+      const dX2 = 60 + (Math.max(0, 100 + sim3DemandShift) / 140) * 280; // P=10000
+      const sX1 = 60 + (Math.max(0, 40 + sim3SupplyShift) / 140) * 280; // P=10000
+      const sX2 = 60 + (Math.max(0, 100 + sim3SupplyShift) / 140) * 280; // P=16000
+
+      const eqCx = 60 + (eqQty / 140) * 280;
+      const eqCy = 200 - ((eqPrice - 8000) / 10000) * 170;
+      const curCy = 200 - ((sim3Price - 8000) / 10000) * 170;
+
+      return `
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          <div class="lg:col-span-5 space-y-4">
+            <div class="p-4 rounded-2xl bg-purple-50 border border-purple-200 space-y-3">
+              <div class="flex justify-between items-center">
+                <label class="font-bold text-sm text-purple-950">Atur Harga Pasar Saat Ini:</label>
+                <span class="px-3 py-1 rounded-xl bg-purple-700 text-white font-display font-bold text-base">${formatRp(sim3Price)}</span>
+              </div>
+              <input type="range" min="10000" max="16000" step="500" value="${sim3Price}" oninput="updateSim3Price(this.value)" class="w-full accent-purple-600 cursor-pointer" />
+              <div class="flex justify-between text-[11px] font-bold text-slate-500">
+                <span>Rp10.000</span><span>Rp13.000</span><span>Rp16.000</span>
+              </div>
+            </div>
+
+            <!-- Ubah Jumlah Permintaan & Penawaran (Faktor Eksternal) -->
+            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3 text-xs">
+              <strong class="block text-slate-800">Ubah Kondisi Pasar (Pergeseran Jumlah):</strong>
+              <div>
+                <div class="flex justify-between font-bold text-red-700 mb-1">
+                  <span>Perubahan Permintaan Pembeli:</span>
+                  <span>${sim3DemandShift >= 0 ? '+' : ''}${sim3DemandShift} kg</span>
+                </div>
+                <input type="range" min="-20" max="20" step="10" value="${sim3DemandShift}" oninput="updateSim3Shift('d', this.value)" class="w-full accent-red-500 cursor-pointer" />
+              </div>
+              <div>
+                <div class="flex justify-between font-bold text-brandGreen-700 mb-1">
+                  <span>Perubahan Stok Penawaran Penjual:</span>
+                  <span>${sim3SupplyShift >= 0 ? '+' : ''}${sim3SupplyShift} kg</span>
+                </div>
+                <input type="range" min="-20" max="20" step="10" value="${sim3SupplyShift}" oninput="updateSim3Shift('s', this.value)" class="w-full accent-brandGreen-600 cursor-pointer" />
+              </div>
+            </div>
+
+            <!-- Ringkasan Angka Real-Time -->
+            <div class="grid grid-cols-2 gap-2.5 text-center text-xs">
+              <div class="p-3 rounded-xl bg-red-50 border border-red-200">
+                <span class="text-slate-500 block">Jumlah Diminta (Qd)</span>
+                <strong class="text-lg font-display text-red-700">${qd} kg</strong>
+              </div>
+              <div class="p-3 rounded-xl bg-brandGreen-50 border border-brandGreen-200">
+                <span class="text-slate-500 block">Jumlah Ditawarkan (Qs)</span>
+                <strong class="text-lg font-display text-brandGreen-700">${qs} kg</strong>
+              </div>
+              <div class="p-3 rounded-xl bg-brandYellow-100 border border-brandYellow-400">
+                <span class="text-amber-800 block">Harga Keseimbangan (Pe)</span>
+                <strong class="text-base font-display text-amber-950">${formatRp(eqPrice)}</strong>
+              </div>
+              <div class="p-3 rounded-xl bg-brandBlue-50 border border-brandBlue-200">
+                <span class="text-brandBlue-800 block">Jumlah Keseimbangan (Qe)</span>
+                <strong class="text-base font-display text-brandBlue-950">${eqQty} kg</strong>
+              </div>
+            </div>
+
+            <div class="flex gap-2">
+              <button onclick="findEquilibriumNow()" class="btn-3d px-4 py-2.5 rounded-xl bg-purple-600 text-white font-bold text-xs"><i class="fa-solid fa-bullseye mr-1"></i> Temukan Titik Keseimbangan</button>
+              <button onclick="resetSim3()" class="btn-3d px-4 py-2.5 rounded-xl bg-slate-200 text-slate-800 font-bold text-xs"><i class="fa-solid fa-rotate-left mr-1"></i> Reset</button>
+            </div>
+          </div>
+
+          <!-- Grafik Gabungan Kurva D dan S -->
+          <div class="lg:col-span-7 space-y-4">
+            <div class="bg-slate-50 p-4 rounded-2xl border-2 border-purple-200">
+              <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                <h4 class="font-display font-bold text-purple-900">KURVA KESEIMBANGAN PASAR (D & S)</h4>
+                ${marketStatus}
+              </div>
+
+              <svg viewBox="0 0 380 230" class="w-full h-auto bg-white rounded-xl border border-slate-200">
+                <line x1="60" y1="25" x2="60" y2="200" stroke="#334155" stroke-width="2.5" />
+                <line x1="60" y1="200" x2="350" y2="200" stroke="#334155" stroke-width="2.5" />
+                <text x="12" y="20" fill="#0f172a" font-size="10" font-weight="bold">Harga (Rp)</text>
+                <text x="275" y="220" fill="#0f172a" font-size="10" font-weight="bold">Jumlah (kg)</text>
+                <text x="10" y="68" fill="#64748b" font-size="9">16.000</text>
+                <text x="10" y="119" fill="#64748b" font-size="9">13.000</text>
+                <text x="10" y="170" fill="#64748b" font-size="9">10.000</text>
+
+                <!-- Garis Harga Aktif Horizontal -->
+                <line x1="60" y1="${curCy}" x2="340" y2="${curCy}" stroke="#9333ea" stroke-width="1.5" stroke-dasharray="5,3" />
+                <text x="255" y="${curCy - 4}" fill="#7e22ce" font-size="9" font-weight="bold">Harga Aktif: ${formatRp(sim3Price)}</text>
+
+                <!-- Kurva Permintaan D -->
+                <line x1="${dX1}" y1="64" x2="${dX2}" y2="166" stroke="#ef4444" stroke-width="3.5" stroke-linecap="round" />
+                <text x="${dX2 + 4}" y="170" fill="#dc2626" font-size="11" font-weight="bold">D</text>
+
+                <!-- Kurva Penawaran S -->
+                <line x1="${sX1}" y1="166" x2="${sX2}" y2="64" stroke="#16a34a" stroke-width="3.5" stroke-linecap="round" />
+                <text x="${sX2 + 4}" y="64" fill="#15803d" font-size="11" font-weight="bold">S</text>
+
+                <!-- Titik Keseimbangan E -->
+                <circle cx="${eqCx}" cy="${eqCy}" r="8" fill="#facc15" stroke="#0f172a" stroke-width="2.5" />
+                <text x="${eqCx + 10}" y="${eqCy + 4}" fill="#0f172a" font-size="10" font-weight="bold">E (${eqQty}kg, ${formatRp(eqPrice)})</text>
+              </svg>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-purple-50 border border-purple-200 text-xs sm:text-sm space-y-1">
+              <p class="font-bold text-purple-950"><i class="fa-solid fa-robot mr-1.5"></i>Analisis Mekanisme Pasar PIKO:</p>
+              <p>Titik keseimbangan pasar berada pada harga <strong>${formatRp(eqPrice)}/kg</strong> dengan jumlah transaksi <strong>${eqQty} kg</strong>.
+              ${qd > qs ? `Saat ini harga berada di bawah keseimbangan sehingga terjadi <strong>kelebihan permintaan sebesar ${qd - qs} kg</strong>.` : qd < qs ? `Saat ini harga berada di atas keseimbangan sehingga terjadi <strong>kelebihan penawaran sebesar ${qs - qd} kg</strong>.` : `Selamat! Pasar berada dalam kondisi <strong>seimbang sempurna</strong>.`}</p>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function updateSim1(val) {
+      sim1Price = parseInt(val);
+      renderSimulasi(document.getElementById('app-content'));
+    }
+
+    function updateSim2(val) {
+      sim2Price = parseInt(val);
+      renderSimulasi(document.getElementById('app-content'));
+    }
+
+    function updateSim3Price(val) {
+      sim3Price = parseInt(val);
+      renderSimulasi(document.getElementById('app-content'));
+    }
+
+    function updateSim3Shift(type, val) {
+      if (type === 'd') sim3DemandShift = parseInt(val);
+      if (type === 's') sim3SupplyShift = parseInt(val);
+      renderSimulasi(document.getElementById('app-content'));
+    }
+
+    function findEquilibriumNow() {
+      const eqPrice = Math.round(((260 + sim3DemandShift - sim3SupplyShift) / 2) * 100);
+      sim3Price = eqPrice;
+      playSFX('coin');
+      renderSimulasi(document.getElementById('app-content'));
+      showToast(`Harga keseimbangan tercapai pada ${formatRp(eqPrice)}!`, 'success');
+    }
+
+    function resetSim3() {
+      playSFX('click');
+      sim3Price = 13000;
+      sim3DemandShift = 0;
+      sim3SupplyShift = 0;
+      renderSimulasi(document.getElementById('app-content'));
+    }
+
+    /*************************************************************************
+     * 7. MENU 3: PRAKTIKUM ("MINI MARKET DAY – PENJUAL & PEMBELI CERDAS")
+     *************************************************************************/
+    function renderPraktikum(container) {
+      currentNarrationText = "Menu Praktikum: Mini Market Day, Menjadi Penjual dan Pembeli Cerdas. Lakukan simulasi jual beli dan tawar-menawar di kelas atau gunakan kasir mini virtual, lalu catat transaksi dan hitung omzet serta keuntunganmu.";
+      const p = appState.praktikumData || { rows: [] };
+      if (!p.rows || p.rows.length === 0) {
+        p.rows = [
+          { barang: 'Buku Tulis Paket', modal: 12000, label: 16000, deal: 15000, qty: 10 },
+          { barang: 'Pulpen Gel Warna', modal: 3000, label: 5000, deal: 4500, qty: 15 },
+          { barang: 'Botol Minum Sehat', modal: 18000, label: 25000, deal: 22000, qty: 6 }
+        ];
+      }
+
+      let totalOmzet = 0;
+      let totalModal = 0;
+      p.rows.forEach(r => {
+        totalOmzet += (Number(r.deal) || 0) * (Number(r.qty) || 0);
+        totalModal += (Number(r.modal) || 0) * (Number(r.qty) || 0);
+      });
+      const totalLaba = totalOmzet - totalModal;
+
+      container.innerHTML = `
+        <div class="space-y-6">
+          <!-- Header Praktikum -->
+          <div class="bg-gradient-to-r from-brandGreen-600 to-emerald-800 rounded-3xl p-6 text-white shadow-lg no-print">
+            <span class="px-3 py-1 rounded-full bg-brandYellow-400 text-slate-900 font-extrabold text-xs">PRAKTIKUM EKONOMI KELAS VII</span>
+            <h2 class="text-2xl sm:text-3xl font-display font-bold mt-1">MINI MARKET DAY – MENJADI PENJUAL DAN PEMBELI CERDAS</h2>
+            <p class="text-sm text-emerald-100">Memahami proses transaksi jual beli, penetapan harga, tawar-menawar, perhitungan omzet, dan keuntungan sederhana.</p>
+          </div>
+
+          <!-- Alat & Langkah Praktikum -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 no-print">
+            <div class="bg-white p-5 rounded-2xl border-2 border-brandGreen-100 shadow-sm">
+              <h4 class="font-display font-bold text-brandGreen-700 mb-2"><i class="fa-solid fa-box-open mr-2"></i>Alat dan Bahan Praktikum</h4>
+              <ul class="list-disc pl-5 text-xs sm:text-sm text-slate-700 space-y-1">
+                <li>Uang mainan (pecahan Rp1.000 hingga Rp50.000).</li>
+                <li>Barang dagangan / alat tulis / gambar produk & label harga.</li>
+                <li>Kalkulator otomatis di bawah ini & lembar pencatatan digital.</li>
+              </ul>
+            </div>
+            <div class="bg-white p-5 rounded-2xl border-2 border-brandOrange-100 shadow-sm">
+              <h4 class="font-display font-bold text-brandOrange-700 mb-2"><i class="fa-solid fa-shoe-prints mr-2"></i>10 Langkah Kegiatan Mini Market Day</h4>
+              <p class="text-xs text-slate-700 leading-relaxed">
+                1) Bentuk kelompok penjual & pembeli → 2) Penjual tentukan modal & label harga → 3) Pembeli bawa uang mainan → 4) Lakukan transaksi → 5) Lakukan tawar-menawar → 6) Catat harga kesepakatan → 7) Catat jumlah terjual → 8) Hitung omzet & laba → 9) Bandingkan hasil antarkelompok → 10) Buat kesimpulan.
+              </p>
+            </div>
+          </div>
+
+          <!-- Lembar Pencatatan & Kalkulator Omzet Otomatis -->
+          <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-xl border-2 border-slate-200 space-y-6">
+            <h3 class="font-display font-bold text-xl text-center text-slate-900 border-b pb-3">
+              LAPORAN TRANSAKSI & ANALISIS MINI MARKET DAY
+            </h3>
+
+            <!-- Identitas -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div>
+                <label class="block text-xs font-bold text-slate-600 mb-1">Nama Kelompok / Toko:</label>
+                <input type="text" id="prak-kelompok" value="${p.kelompok || ''}" placeholder="Contoh: Toko Berkah Mandiri" class="w-full p-2.5 rounded-xl border border-slate-300 text-sm" />
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-600 mb-1">Peran Utama Kelompok:</label>
+                <select id="prak-peran" class="w-full p-2.5 rounded-xl border border-slate-300 text-sm bg-white">
+                  <option value="Penjual & Pembeli" ${p.peran === 'Penjual & Pembeli' ? 'selected' : ''}>Penjual & Pembeli (Bergantian)</option>
+                  <option value="Kelompok Penjual" ${p.peran === 'Kelompok Penjual' ? 'selected' : ''}>Kelompok Penjual</option>
+                  <option value="Kelompok Pembeli" ${p.peran === 'Kelompok Pembeli' ? 'selected' : ''}>Kelompok Pembeli</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-600 mb-1">Kelas:</label>
+                <input type="text" id="prak-kelas" value="${p.kelas || 'VII'}" class="w-full p-2.5 rounded-xl border border-slate-300 text-sm" />
+              </div>
+            </div>
+
+            <!-- Tabel Transaksi Interaktif -->
+            <div class="overflow-x-auto">
+              <table class="w-full text-xs sm:text-sm border-collapse">
+                <thead>
+                  <tr class="bg-brandOrange-500 text-white">
+                    <th class="p-2.5 text-left rounded-tl-xl">Nama Barang</th>
+                    <th class="p-2.5 text-right">Harga Modal (Rp)</th>
+                    <th class="p-2.5 text-right">Label Harga (Rp)</th>
+                    <th class="p-2.5 text-right">Harga Deal (Rp)</th>
+                    <th class="p-2.5 text-center">Terjual (Unit)</th>
+                    <th class="p-2.5 text-right rounded-tr-xl">Omzet (Rp)</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200">
+                  ${p.rows.map((r, i) => {
+                    const rowOmzet = (Number(r.deal) || 0) * (Number(r.qty) || 0);
+                    return `
+                      <tr>
+                        <td class="p-2"><input type="text" id="pr-barang-${i}" value="${r.barang}" class="w-full p-1.5 border rounded-lg text-xs" /></td>
+                        <td class="p-2"><input type="number" id="pr-modal-${i}" value="${r.modal}" onchange="recalcPraktikum()" class="w-24 p-1.5 border rounded-lg text-right text-xs" /></td>
+                        <td class="p-2"><input type="number" id="pr-label-${i}" value="${r.label}" class="w-24 p-1.5 border rounded-lg text-right text-xs" /></td>
+                        <td class="p-2"><input type="number" id="pr-deal-${i}" value="${r.deal}" onchange="recalcPraktikum()" class="w-24 p-1.5 border rounded-lg text-right text-xs font-bold text-brandBlue-900" /></td>
+                        <td class="p-2 text-center"><input type="number" id="pr-qty-${i}" value="${r.qty}" onchange="recalcPraktikum()" class="w-16 p-1.5 border rounded-lg text-center text-xs font-bold" /></td>
+                        <td class="p-2 text-right font-bold text-slate-800">${formatRp(rowOmzet)}</td>
+                      </tr>
+                    `;
+                  }).join('')}
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Ringkasan Omzet & Keuntungan Otomatis -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-brandGreen-50 p-4 rounded-2xl border border-brandGreen-200 text-center">
+              <div>
+                <span class="text-xs font-bold text-slate-600 block">Total Modal Barang Terjual</span>
+                <strong class="text-xl font-display text-slate-800">${formatRp(totalModal)}</strong>
+              </div>
+              <div>
+                <span class="text-xs font-bold text-brandBlue-700 block">Total Omzet (Pendapatan Kotor)</span>
+                <strong class="text-xl font-display text-brandBlue-900">${formatRp(totalOmzet)}</strong>
+              </div>
+              <div>
+                <span class="text-xs font-bold text-brandGreen-700 block">Keuntungan Bersih (Laba)</span>
+                <strong class="text-xl font-display text-brandGreen-700">${formatRp(totalLaba)}</strong>
+              </div>
+            </div>
+
+            <!-- Pertanyaan Diskusi, Analisis & Kesimpulan -->
+            <div class="space-y-3 text-sm">
+              <div>
+                <label class="font-bold text-slate-800 block mb-1">1. Analisis Tawar-Menawar: Barang apa yang paling laris dan mengapa proses tawar-menawar bisa menghasilkan harga kesepakatan?</label>
+                <textarea id="prak-analisis" rows="2" class="w-full p-2.5 rounded-xl border border-slate-300" placeholder="Tuliskan hasil analisismu...">${p.analisis || ''}</textarea>
+              </div>
+              <div>
+                <label class="font-bold text-slate-800 block mb-1">2. Kesimpulan Praktikum Mini Market Day:</label>
+                <textarea id="prak-kesimpulan" rows="2" class="w-full p-2.5 rounded-xl border border-slate-300" placeholder="Tuliskan kesimpulan kelompok...">${p.kesimpulan || ''}</textarea>
+              </div>
+            </div>
+
+            <div class="flex flex-wrap justify-between gap-3 no-print">
+              <button onclick="addPraktikumRow()" class="px-4 py-2.5 rounded-xl bg-brandYellow-300 hover:bg-brandYellow-400 text-slate-900 font-bold text-xs">
+                <i class="fa-solid fa-plus mr-1"></i> Tambah Baris Barang
+              </button>
+              <div class="flex gap-2">
+                <button onclick="savePraktikum(true)" class="btn-3d px-6 py-3 rounded-2xl bg-brandGreen-600 hover:bg-brandGreen-700 text-white font-bold text-sm">
+                  <i class="fa-solid fa-floppy-disk mr-2"></i> Simpan Laporan
+                </button>
+                <button onclick="window.print()" class="btn-3d px-6 py-3 rounded-2xl bg-brandBlue-600 hover:bg-brandBlue-700 text-white font-bold text-sm">
+                  <i class="fa-solid fa-print mr-2"></i> Cetak Laporan
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function recalcPraktikum() {
+      savePraktikum(false);
+      renderPraktikum(document.getElementById('app-content'));
+    }
+
+    function addPraktikumRow() {
+      savePraktikum(false);
+      appState.praktikumData.rows.push({ barang: 'Produk Baru', modal: 5000, label: 8000, deal: 7000, qty: 5 });
+      saveState();
+      renderPraktikum(document.getElementById('app-content'));
+    }
+
+    function savePraktikum(notify) {
+      const rows = [];
+      const count = (appState.praktikumData.rows || []).length;
+      for (let i = 0; i < count; i++) {
+        rows.push({
+          barang: document.getElementById(`pr-barang-${i}`)?.value || '',
+          modal: Number(document.getElementById(`pr-modal-${i}`)?.value || 0),
+          label: Number(document.getElementById(`pr-label-${i}`)?.value || 0),
+          deal: Number(document.getElementById(`pr-deal-${i}`)?.value || 0),
+          qty: Number(document.getElementById(`pr-qty-${i}`)?.value || 0)
+        });
+      }
+      appState.praktikumData = {
+        kelompok: document.getElementById('prak-kelompok')?.value || '',
+        peran: document.getElementById('prak-peran')?.value || '',
+        kelas: document.getElementById('prak-kelas')?.value || '',
+        rows,
+        analisis: document.getElementById('prak-analisis')?.value || '',
+        kesimpulan: document.getElementById('prak-kesimpulan')?.value || ''
+      };
+      saveState();
+      if (notify) {
+        playSFX('coin');
+        showToast('Laporan Praktikum Mini Market Day tersimpan!', 'success');
+      }
+    }
+
+    /*************************************************************************
+     * 8. MENU 4: GAME EDUKASI ("PIKO CHALLENGE – JADILAH AHLI EKONOMI MUDA!")
+     *************************************************************************/
+    const PIKO_GAMES = {
+      g1: [
+        { lvl: 'Mudah', q: 'Saat panen raya jagung melimpah ruah di pasar sementara pembeli tetap, harga jagung akan...', opts: ['Turun menjadi lebih murah', 'Naik drastis dua kali lipat', 'Tidak boleh dijual'], ans: 0, exp: 'Stok melimpah (penawaran naik) menyebabkan harga turun.' },
+        { lvl: 'Sedang', q: 'Harga cabai normal Rp30.000/kg. Akibat hujan lebat, banyak petani gagal panen sehingga stok cabai berkurang. Prediksi harga cabai yang paling tepat adalah...', opts: ['Rp15.000/kg', 'Rp65.000/kg', 'Rp5.000/kg'], ans: 1, exp: 'Kelangkaan barang akibat gagal panen mendorong harga naik tajam.' },
+        { lvl: 'Sedang', q: 'Penjual menawarkan beras Rp14.000/kg, namun pembeli menawar Rp12.000/kg. Akhirnya keduanya sepakat di tengah-tengah pada harga...', opts: ['Rp13.000/kg', 'Rp20.000/kg', 'Rp8.000/kg'], ans: 0, exp: 'Harga kesepakatan terbentuk melalui tawar-menawar di titik tengah Rp13.000/kg.' },
+        { lvl: 'Sukar', q: 'Jika biaya produksi roti naik karena harga tepung terigu meningkat, maka harga jual roti oleh produsen cenderung...', opts: ['Diturunkan agar rugi', 'Dinaikkan untuk menutup biaya produksi', 'Digratiskan semua'], ans: 1, exp: 'Kenaikan biaya produksi membuat produsen menaikkan harga jual.' }
+      ],
+      g2: [
+        { lvl: 'Mudah', q: 'Ibu berbelanja sayur di pasar pagi dan melakukan tawar-menawar langsung dengan pedagang. Ini contoh...', opts: ['Pasar Tradisional & Konkret', 'Pasar Modern & Abstrak', 'Pasar Internasional'], ans: 0, exp: 'Ada tawar-menawar langsung dan barang fisik di lokasi.' },
+        { lvl: 'Mudah', q: 'Andi membeli buku pelajaran melalui aplikasi e-commerce di ponselnya. Transaksi terjadi pada...', opts: ['Pasar Abstrak', 'Pasar Konkret', 'Pasar Loak'], ans: 0, exp: 'Pasar abstrak mempertemukan penjual dan pembeli secara daring tanpa tatap muka.' },
+        { lvl: 'Sedang', q: 'Indonesia mengekspor biji kopi dan kelapa sawit ke negara-negara Eropa dan Jepang. Kegiatan ini termasuk...', opts: ['Pasar Lokal', 'Pasar Internasional', 'Pasar Kecamatan'], ans: 1, exp: 'Perdagangan ekspor-impor antarnegara merupakan pasar internasional.' },
+        { lvl: 'Sukar', q: 'Bursa Efek Indonesia (pasar saham) di mana investor bertransaksi surat berharga secara elektronik diklasifikasikan sebagai...', opts: ['Pasar Abstrak & Nasional', 'Pasar Tradisional & Lokal', 'Pasar Kaget'], ans: 0, exp: 'Bursa efek memperjualbelikan instrumen abstrak dalam skala nasional/global.' }
+      ],
+      g3: [
+        { id: 1, left: 'Permintaan (Demand)', right: 'Jumlah barang yang ingin & mampu dibeli konsumen' },
+        { id: 2, left: 'Penawaran (Supply)', right: 'Jumlah barang yang tersedia & ditawarkan penjual' },
+        { id: 3, left: 'Harga Keseimbangan', right: 'Titik temu saat jumlah permintaan = penawaran' },
+        { id: 4, left: 'Surplus (Kelebihan Penawaran)', right: 'Harga terlalu tinggi sehingga stok penjual berlebih' }
+      ],
+      g4: [
+        { lvl: 'Mudah', q: 'Hukum permintaan menyatakan bahwa jika harga naik, maka jumlah barang yang diminta akan turun.', isTrue: true, exp: 'Benar! Harga dan jumlah permintaan memiliki hubungan berbanding terbalik.' },
+        { lvl: 'Mudah', q: 'Di pasar modern seperti supermarket, pembeli bebas melakukan tawar-menawar harga di kasir.', isTrue: false, exp: 'Salah! Pasar modern menerapkan sistem harga pas (label harga pasti).' },
+        { lvl: 'Sedang', q: 'Kurva penawaran bergerak naik dari kiri bawah ke kanan atas.', isTrue: true, exp: 'Benar! Semakin tinggi harga, semakin banyak barang yang ditawarkan penjual.' },
+        { lvl: 'Sukar', q: 'Jika harga berada di bawah harga keseimbangan, maka pasar mengalami kelebihan penawaran (surplus).', isTrue: false, exp: 'Salah! Harga di bawah keseimbangan menyebabkan kelebihan permintaan (shortage).' }
+      ],
+      g5: [
+        { lvl: 'Mudah', q: 'Jika harga barang turun drastis, bagaimana pergerakan titik pada kurva permintaan?', opts: ['Bergerak turun ke kanan (jumlah diminta bertambah)', 'Bergerak naik ke kiri (jumlah diminta berkurang)', 'Kurva menghilang'], ans: 0, exp: 'Harga turun menambah jumlah barang yang diminta ke arah kanan sumbu Q.' },
+        { lvl: 'Sedang', q: 'Menjelang hari raya, pendapatan dan kebutuhan masyarakat meningkat tajam. Kurva permintaan akan bergeser ke...', opts: ['Kanan atas (permintaan meningkat)', 'Kiri bawah (permintaan menurun)', 'Tetap diam di tempat'], ans: 0, exp: 'Kenaikan permintaan akibat faktor non-harga menggeser kurva D ke kanan.' },
+        { lvl: 'Sukar', q: 'Penemuan teknologi mesin pembuat sepatu otomatis membuat produksi berlipat ganda. Kurva penawaran bergeser ke...', opts: ['Kanan bawah (penawaran bertambah)', 'Kiri atas (penawaran berkurang)', 'Berubah menjadi kurva permintaan'], ans: 0, exp: 'Teknologi meningkatkan penawaran sehingga kurva S bergeser ke kanan.' },
+        { lvl: 'Sukar', q: 'Perpotongan antara kurva permintaan (D) dan kurva penawaran (S) pada grafik menunjukkan...', opts: ['Titik Keseimbangan Pasar (Equilibrium)', 'Titik Kerugian Maksimal', 'Titik Kelangkaan Mutlak'], ans: 0, exp: 'Perpotongan kurva D dan S adalah titik harga dan jumlah keseimbangan.' }
+      ]
+    };
+
+    let activePikoGame = null;
+    let pikoTimer = null;
+    let pikoGameState = {};
+
+    function renderGameHub(container) {
+      if (pikoTimer) clearInterval(pikoTimer);
+      currentNarrationText = "Selamat datang di PIKO Challenge: Jadilah Ahli Ekonomi Muda! Pilih lima tantangan permainan edukasi dan kumpulkan bintang sebanyak-banyaknya!";
+
+      if (activePikoGame) {
+        renderActivePikoGame(container, activePikoGame);
+        return;
+      }
+
+      const totalStars = Object.values(appState.gameStars).reduce((a, b) => a + b, 0);
+      const games = [
+        { id: 'g1', title: 'GAME 1: TEBAK HARGA', desc: 'Analisis situasi stok & panen pasar untuk menebak pergerakan harga!', icon: 'fa-tags', grad: 'from-brandOrange-500 to-amber-600' },
+        { id: 'g2', title: 'GAME 2: KLASIFIKASI PASAR', desc: 'Kelompokkan contoh transaksi ke jenis pasar yang tepat!', icon: 'fa-store', grad: 'from-brandBlue-500 to-indigo-700' },
+        { id: 'g3', title: 'GAME 3: PASANGKAN KONSEP', desc: 'Pasangkan istilah permintaan, penawaran, dan keseimbangan!', icon: 'fa-puzzle-piece', grad: 'from-purple-500 to-pink-600' },
+        { id: 'g4', title: 'GAME 4: BENAR ATAU SALAH', desc: 'Uji ketepatanmu menilai pernyataan mekanisme pasar!', icon: 'fa-check-double', grad: 'from-brandGreen-500 to-emerald-700' },
+        { id: 'g5', title: 'GAME 5: TANTANGAN KURVA', desc: 'Tentukan arah pergerakan dan pergeseran kurva D dan S!', icon: 'fa-chart-line', grad: 'from-rose-500 to-red-700' }
+      ];
+
+      container.innerHTML = `
+        <div class="space-y-6">
+          <div class="bg-gradient-to-r from-brandOrange-500 via-amber-500 to-brandYellow-400 rounded-3xl p-6 text-white shadow-xl flex flex-col md:flex-row items-center justify-between gap-4">
+            <div>
+              <span class="px-3 py-1 rounded-full bg-white text-brandOrange-700 font-extrabold text-xs">GAME EDUKASI INTERAKTIF</span>
+              <h2 class="text-2xl sm:text-3xl font-display font-extrabold mt-1">PIKO CHALLENGE – JADILAH AHLI EKONOMI MUDA!</h2>
+              <p class="text-sm text-amber-50">Selesaikan 5 tantangan dengan level Mudah, Sedang, dan Sukar untuk meraih Sertifikat Ekonom Muda!</p>
+            </div>
+            <div class="bg-black/25 backdrop-blur-sm px-5 py-3 rounded-2xl text-center shrink-0">
+              <span class="text-xs font-bold block">Bintang Terkumpul</span>
+              <span class="text-3xl font-display font-extrabold text-brandYellow-300"><i class="fa-solid fa-star"></i> ${totalStars} / 15</span>
+            </div>
+          </div>
+
+          <!-- Papan Skor & Sertifikat Game -->
+          <div class="bg-white p-4 rounded-2xl border border-brandOrange-200 flex flex-wrap items-center justify-between gap-3 shadow-sm">
+            <div class="flex flex-wrap items-center gap-4 text-xs sm:text-sm font-bold text-slate-700">
+              <span><i class="fa-solid fa-trophy text-amber-500 mr-1"></i> Papan Skor:</span>
+              <span>G1: <strong>${appState.gameHighScores.g1}</strong></span>
+              <span>G2: <strong>${appState.gameHighScores.g2}</strong></span>
+              <span>G3: <strong>${appState.gameHighScores.g3}</strong></span>
+              <span>G4: <strong>${appState.gameHighScores.g4}</strong></span>
+              <span>G5: <strong>${appState.gameHighScores.g5}</strong></span>
+            </div>
+            ${totalStars >= 10 ? `
+              <button onclick="openCertificateModal('PIKO CHALLENGE – AHLI EKONOMI MUDA', 'Telah menyelesaikan seluruh tantangan PIKO Challenge dengan perolehan ${totalStars} Bintang!')" class="btn-3d px-4 py-2 rounded-xl bg-brandYellow-400 text-slate-900 font-extrabold text-xs">
+                <i class="fa-solid fa-certificate mr-1"></i> Cetak Sertifikat Game
+              </button>
+            ` : `<span class="text-xs text-slate-500 font-semibold">Raih min. 10 bintang untuk Sertifikat Game</span>`}
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            ${games.map(g => {
+              const stars = appState.gameStars[g.id] || 0;
+              return `
+                <div class="bg-white rounded-3xl overflow-hidden shadow-md border-2 border-slate-100 hover:border-brandOrange-400 transition flex flex-col justify-between">
+                  <div>
+                    <div class="bg-gradient-to-r ${g.grad} p-5 text-white">
+                      <div class="flex justify-between items-center mb-2">
+                        <i class="fa-solid ${g.icon} text-2xl"></i>
+                        <div class="flex gap-1 text-brandYellow-300 text-sm">
+                          ${[1,2,3].map(s => `<i class="fa-solid fa-star ${s <= stars ? 'opacity-100' : 'opacity-30'}"></i>`).join('')}
+                        </div>
+                      </div>
+                      <h3 class="font-display font-bold text-lg">${g.title}</h3>
+                    </div>
+                    <div class="p-4">
+                      <p class="text-sm text-slate-600">${g.desc}</p>
+                    </div>
+                  </div>
+                  <div class="p-4 pt-0">
+                    <button onclick="launchPikoGame('${g.id}')" class="btn-3d w-full py-3 rounded-2xl bg-brandBlue-600 hover:bg-brandBlue-700 text-white font-bold text-sm">
+                      <i class="fa-solid fa-play mr-2"></i> Mainkan Sekarang
+                    </button>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    function launchPikoGame(id) {
+      playSFX('click');
+      activePikoGame = id;
+      pikoGameState = { step: 0, score: 0, timeLeft: 60, log: [], selLeft: null, matched: [] };
+      renderGameHub(document.getElementById('app-content'));
+      if (pikoTimer) clearInterval(pikoTimer);
+      pikoTimer = setInterval(() => {
+        pikoGameState.timeLeft--;
+        const tEl = document.getElementById('piko-timer');
+        if (tEl) tEl.textContent = pikoGameState.timeLeft + 's';
+        if (pikoGameState.timeLeft <= 0) {
+          clearInterval(pikoTimer);
+          endPikoGame();
+        }
+      }, 1000);
+    }
+
+    function quitPikoGame() {
+      if (pikoTimer) clearInterval(pikoTimer);
+      activePikoGame = null;
+      renderGameHub(document.getElementById('app-content'));
+    }
+
+    function endPikoGame() {
+      if (pikoTimer) clearInterval(pikoTimer);
+      playSFX('win');
+      const id = activePikoGame;
+      const sc = pikoGameState.score;
+      const stars = sc >= 75 ? 3 : sc >= 50 ? 2 : sc > 0 ? 1 : 0;
+
+      if (sc > (appState.gameHighScores[id] || 0)) appState.gameHighScores[id] = sc;
+      if (stars > (appState.gameStars[id] || 0)) appState.gameStars[id] = stars;
+      saveState();
+
+      const area = document.getElementById('piko-game-body');
+      if (!area) return;
+      area.innerHTML = `
+        <div class="text-center py-6 space-y-4 page-transition">
+          <div class="inline-flex gap-2 text-4xl text-brandYellow-400">
+            ${[1,2,3].map(s => `<i class="fa-solid fa-star ${s <= stars ? 'animate-bounce' : 'text-slate-300'}"></i>`).join('')}
+          </div>
+          <h3 class="text-3xl font-display font-extrabold text-brandOrange-700">TANTANGAN SELESAI!</h3>
+          <p class="text-lg font-bold text-slate-800">Skor Akhir Kamu: <span class="text-2xl text-brandGreen-600">${sc}</span> Poin</p>
+          <div class="max-w-xl mx-auto text-left bg-slate-50 p-4 rounded-2xl border border-slate-200 max-h-48 overflow-y-auto space-y-2">
+            <h4 class="font-bold text-xs uppercase text-slate-500">Pembahasan Jawaban:</h4>
+            ${pikoGameState.log.map(l => `<p class="text-xs font-semibold ${l.ok ? 'text-brandGreen-700' : 'text-red-600'}">${l.ok ? '✔' : '✘'} ${l.msg}</p>`).join('')}
+          </div>
+          <div class="flex justify-center gap-3 pt-2">
+            <button onclick="launchPikoGame('${id}')" class="btn-3d px-6 py-3 rounded-2xl bg-brandYellow-400 text-slate-900 font-bold text-sm"><i class="fa-solid fa-rotate-right mr-1"></i> Main Lagi</button>
+            <button onclick="quitPikoGame()" class="btn-3d px-6 py-3 rounded-2xl bg-brandOrange-500 text-white font-bold text-sm">Menu Game</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderActivePikoGame(container, id) {
+      container.innerHTML = `
+        <div class="bg-white rounded-3xl p-5 sm:p-8 shadow-xl border-2 border-brandOrange-300">
+          <div class="flex flex-wrap items-center justify-between gap-3 border-b pb-4 mb-6">
+            <button onclick="quitPikoGame()" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs">
+              <i class="fa-solid fa-arrow-left mr-1"></i> Kembali
+            </button>
+            <div class="flex items-center gap-3">
+              <span class="px-3.5 py-1.5 rounded-xl bg-brandOrange-100 text-brandOrange-800 font-extrabold text-sm">Skor: <span id="piko-score">${pikoGameState.score}</span></span>
+              <span class="px-3.5 py-1.5 rounded-xl bg-red-100 text-red-700 font-extrabold text-sm"><i class="fa-solid fa-clock mr-1"></i><span id="piko-timer">${pikoGameState.timeLeft}s</span></span>
+            </div>
+          </div>
+          <div id="piko-game-body"></div>
+        </div>
+      `;
+      updatePikoGameStep();
+    }
+
+    function updatePikoGameStep() {
+      const body = document.getElementById('piko-game-body');
+      const scEl = document.getElementById('piko-score');
+      if (scEl) scEl.textContent = pikoGameState.score;
+      if (!body) return;
+
+      if (activePikoGame === 'g1' || activePikoGame === 'g2' || activePikoGame === 'g5') {
+        const list = PIKO_GAMES[activePikoGame];
+        if (pikoGameState.step >= list.length) return endPikoGame();
+        const item = list[pikoGameState.step];
+        body.innerHTML = `
+          <div class="max-w-xl mx-auto text-center space-y-5">
+            <div class="flex justify-center gap-2">
+              <span class="px-3 py-1 rounded-full bg-brandBlue-100 text-brandBlue-900 text-xs font-extrabold">Soal ${pikoGameState.step + 1}/${list.length}</span>
+              <span class="px-3 py-1 rounded-full bg-amber-100 text-amber-800 text-xs font-extrabold">Level: ${item.lvl}</span>
+            </div>
+            <p class="font-bold text-base sm:text-lg text-slate-800 bg-slate-50 p-5 rounded-2xl border">${item.q}</p>
+            <div class="space-y-3">
+              ${item.opts.map((opt, idx) => `
+                <button onclick="answerPikoMCQ(${idx})" class="btn-3d w-full p-4 rounded-2xl bg-white hover:bg-brandOrange-50 border-2 border-brandOrange-200 font-bold text-sm text-slate-800">${opt}</button>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      } else if (activePikoGame === 'g3') {
+        const pairs = PIKO_GAMES.g3;
+        if (pikoGameState.matched.length >= pairs.length) return endPikoGame();
+        const rightSorted = [...pairs].sort((a, b) => a.right.localeCompare(b.right));
+        body.innerHTML = `
+          <div class="max-w-3xl mx-auto space-y-4">
+            <p class="text-center font-bold text-slate-700">Klik istilah ekonomi di sebelah kiri, lalu klik pasangannya di sebelah kanan!</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="space-y-2.5">
+                ${pairs.map(p => {
+                  const done = pikoGameState.matched.includes(p.id);
+                  const sel = pikoGameState.selLeft === p.id;
+                  return `<button ${done ? 'disabled' : ''} onclick="selPikoLeft(${p.id})" class="w-full p-3.5 rounded-2xl border-2 font-bold text-sm text-left transition ${done ? 'bg-brandGreen-100 border-brandGreen-400 opacity-60' : sel ? 'bg-brandYellow-300 border-amber-500' : 'bg-white border-brandOrange-200 hover:bg-brandOrange-50'}">${p.left}</button>`;
+                }).join('')}
+              </div>
+              <div class="space-y-2.5">
+                ${rightSorted.map(p => {
+                  const done = pikoGameState.matched.includes(p.id);
+                  return `<button ${done ? 'disabled' : ''} onclick="selPikoRight(${p.id})" class="w-full p-3.5 rounded-2xl border-2 font-semibold text-xs sm:text-sm text-left transition ${done ? 'bg-brandGreen-100 border-brandGreen-400 opacity-60' : 'bg-white border-brandBlue-200 hover:bg-brandBlue-50'}">${p.right}</button>`;
+                }).join('')}
+              </div>
+            </div>
+          </div>
+        `;
+      } else if (activePikoGame === 'g4') {
+        const list = PIKO_GAMES.g4;
+        if (pikoGameState.step >= list.length) return endPikoGame();
+        const item = list[pikoGameState.step];
+        body.innerHTML = `
+          <div class="max-w-xl mx-auto text-center space-y-6 py-3">
+            <span class="px-3 py-1 rounded-full bg-brandGreen-100 text-brandGreen-800 text-xs font-extrabold">Pernyataan ${pikoGameState.step + 1}/${list.length} • Level ${item.lvl}</span>
+            <div class="p-6 rounded-3xl bg-amber-50 border-2 border-amber-300 text-lg font-bold text-slate-800">"${item.q}"</div>
+            <div class="flex justify-center gap-4">
+              <button onclick="answerPikoTF(true)" class="btn-3d px-8 py-4 rounded-2xl bg-brandGreen-500 text-white font-display font-bold text-lg"><i class="fa-solid fa-check mr-2"></i>BENAR</button>
+              <button onclick="answerPikoTF(false)" class="btn-3d px-8 py-4 rounded-2xl bg-red-500 text-white font-display font-bold text-lg"><i class="fa-solid fa-xmark mr-2"></i>SALAH</button>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    function answerPikoMCQ(idx) {
+      const item = PIKO_GAMES[activePikoGame][pikoGameState.step];
+      const ok = idx === item.ans;
+      if (ok) { pikoGameState.score += 25; playSFX('coin'); } else { playSFX('wrong'); }
+      pikoGameState.log.push({ ok, msg: item.exp });
+      pikoGameState.step++;
+      updatePikoGameStep();
+    }
+
+    function selPikoLeft(id) {
+      playSFX('click');
+      pikoGameState.selLeft = id;
+      updatePikoGameStep();
+    }
+
+    function selPikoRight(rightId) {
+      if (!pikoGameState.selLeft) return showToast('Pilih istilah di kiri dulu!', 'warning');
+      const p = PIKO_GAMES.g3.find(x => x.id === pikoGameState.selLeft);
+      if (pikoGameState.selLeft === rightId) {
+        playSFX('coin');
+        pikoGameState.score += 25;
+        pikoGameState.matched.push(rightId);
+        pikoGameState.log.push({ ok: true, msg: `${p.left} = ${p.right}` });
+      } else {
+        playSFX('wrong');
+        showToast('Pasangan belum tepat, coba lagi!', 'error');
+      }
+      pikoGameState.selLeft = null;
+      updatePikoGameStep();
+    }
+
+    function answerPikoTF(val) {
+      const item = PIKO_GAMES.g4[pikoGameState.step];
+      const ok = val === item.isTrue;
+      if (ok) { pikoGameState.score += 25; playSFX('coin'); } else { playSFX('wrong'); }
+      pikoGameState.log.push({ ok, msg: item.exp });
+      pikoGameState.step++;
+      updatePikoGameStep();
+    }
+
+    /*************************************************************************
+     * 9. MENU 5: LKPD DIGITAL ("INVESTIGASI HARGA DAN MEKANISME PASAR")
+     * - Termasuk Studi Kasus Kenaikan Harga Telur Menjelang Hari Raya
+     * - Tabel Permintaan & Penawaran serta Grafik Keseimbangan Interaktif
+     *************************************************************************/
+    function renderLKPD(container) {
+      currentNarrationText = "Lembar Kerja Peserta Didik Digital: Investigasi Harga dan Mekanisme Pasar. Diskusikan bersama kelompokmu mengenai studi kasus kenaikan harga telur menjelang hari raya, lengkapi tabel permintaan dan penawaran, tentukan harga keseimbangan, lalu simpan atau cetak LKPD.";
+      const l = appState.lkpdData || {};
+
+      container.innerHTML = `
+        <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-xl border-2 border-indigo-200 space-y-6">
+          <!-- Header LKPD -->
+          <div class="bg-gradient-to-r from-indigo-600 to-purple-700 rounded-2xl p-6 text-white">
+            <span class="px-3 py-1 rounded-full bg-brandYellow-400 text-slate-900 font-extrabold text-xs">LKPD KELOMPOK • KURIKULUM MERDEKA</span>
+            <h2 class="text-2xl sm:text-3xl font-display font-bold mt-1">LKPD INVESTIGASI HARGA DAN MEKANISME PASAR</h2>
+            <p class="text-sm text-indigo-100 mt-1">Tujuan: Menganalisis jenis pasar, permintaan, penawaran, perubahan harga musiman, serta menentukan harga keseimbangan.</p>
+          </div>
+
+          <!-- 1-3. Identitas Kelompok -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 bg-indigo-50/70 p-4 rounded-2xl border border-indigo-200">
+            <div>
+              <label class="block text-xs font-bold text-indigo-950 mb-1">1. Nama Kelompok:</label>
+              <input type="text" id="lkpd-kelompok" value="${l.kelompok || ''}" placeholder="Contoh: Kelompok Adam Smith" class="w-full p-2.5 rounded-xl border border-indigo-200 text-sm bg-white" />
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-indigo-950 mb-1">2. Kelas:</label>
+              <input type="text" id="lkpd-kelas" value="${l.kelas || 'VII'}" class="w-full p-2.5 rounded-xl border border-indigo-200 text-sm bg-white" />
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-indigo-950 mb-1">3. Nama Anggota Kelompok:</label>
+              <textarea id="lkpd-anggota" rows="2" placeholder="1. ... 2. ... 3. ... 4. ..." class="w-full p-2 rounded-xl border border-indigo-200 text-xs bg-white">${l.anggota || ''}</textarea>
+            </div>
+          </div>
+
+          <!-- Petunjuk Kegiatan -->
+          <div class="p-4 rounded-2xl bg-brandYellow-100/80 border border-brandYellow-400 text-xs sm:text-sm text-slate-800">
+            <strong><i class="fa-solid fa-compass text-amber-600 mr-1.5"></i>Petunjuk Kegiatan:</strong>
+            Bacalah studi kasus di bawah ini dengan saksama bersama kelompokmu, lalu diskusikan jawaban untuk setiap bagian investigasi!
+          </div>
+
+          <!-- STUDI KASUS UTAMA: TELUR AYAM MENJELANG HARI RAYA -->
+          <div class="p-5 rounded-2xl bg-brandOrange-50 border-2 border-brandOrange-300 space-y-3">
+            <span class="px-3 py-1 rounded-full bg-brandOrange-500 text-white font-extrabold text-xs">STUDI KASUS INVESTIGASI</span>
+            <h3 class="font-display font-bold text-lg text-brandOrange-700">"Lonjakan Harga Telur Ayam Menjelang Hari Raya"</h3>
+            <p class="text-sm text-slate-800 leading-relaxed">
+              Dua minggu menjelang Hari Raya Idulfitri, masyarakat berbondong-bondong membeli telur ayam untuk membuat kue lebaran dan hidangan keluarga. Permintaan telur meningkat tajam dari biasanya. Namun di saat yang bersamaan, persediaan telur dari peternak berkurang karena cuaca panas ekstrem menurunkan produksi ayam petelur. Akibatnya, harga telur ayam di pasar melonjak dari Rp26.000/kg menjadi Rp34.000/kg.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
+              <div>
+                <label class="font-bold text-xs text-slate-800 block mb-1">a. Apa yang terjadi terhadap permintaan telur menjelang hari raya?</label>
+                <textarea id="lkpd-kasus1" rows="2" class="w-full p-2.5 rounded-xl border border-brandOrange-200 text-xs sm:text-sm bg-white">${l.kasus1 || ''}</textarea>
+              </div>
+              <div>
+                <label class="font-bold text-xs text-slate-800 block mb-1">b. Bagaimana pengaruh kondisi tersebut terhadap harga telur di pasar?</label>
+                <textarea id="lkpd-kasus2" rows="2" class="w-full p-2.5 rounded-xl border border-brandOrange-200 text-xs sm:text-sm bg-white">${l.kasus2 || ''}</textarea>
+              </div>
+              <div>
+                <label class="font-bold text-xs text-slate-800 block mb-1">c. Mengapa harga telur dapat meningkat secara ekonomi?</label>
+                <textarea id="lkpd-kasus3" rows="2" class="w-full p-2.5 rounded-xl border border-brandOrange-200 text-xs sm:text-sm bg-white">${l.kasus3 || ''}</textarea>
+              </div>
+              <div>
+                <label class="font-bold text-xs text-slate-800 block mb-1">d. Apa tindakan bijak yang dapat dilakukan konsumen cerdas?</label>
+                <textarea id="lkpd-kasus4" rows="2" class="w-full p-2.5 rounded-xl border border-brandOrange-200 text-xs sm:text-sm bg-white">${l.kasus4 || ''}</textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Aktivitas Identifikasi Pasar & Penjual-Pembeli -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="p-4 rounded-2xl border border-slate-200">
+              <label class="font-bold text-sm text-brandBlue-900 block mb-1">Aktivitas 1: Identifikasi Jenis Pasar & Kegiatan Penjual-Pembeli</label>
+              <textarea id="lkpd-jenis" rows="3" placeholder="Bandingkan pasar tradisional dan pasar modern yang pernah kelompokmu kunjungi..." class="w-full p-2.5 rounded-xl border border-slate-300 text-sm">${l.jenis || ''}</textarea>
+            </div>
+            <div class="p-4 rounded-2xl border border-slate-200">
+              <label class="font-bold text-sm text-brandGreen-700 block mb-1">Aktivitas 2: Analisis Faktor Permintaan, Penawaran & Perubahan Harga</label>
+              <textarea id="lkpd-faktor" rows="3" placeholder="Tuliskan 3 faktor yang memengaruhi permintaan dan penawaran di pasar..." class="w-full p-2.5 rounded-xl border border-slate-300 text-sm">${l.faktor || ''}</textarea>
+            </div>
+          </div>
+
+          <!-- Aktivitas 3: Tabel Permintaan & Penawaran + Menentukan Harga Keseimbangan -->
+          <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-4">
+            <h4 class="font-display font-bold text-base text-slate-900">Aktivitas 3: Lengkapi Tabel Permintaan & Penawaran Telur serta Tentukan Harga Keseimbangan</h4>
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+              <div class="lg:col-span-6">
+                <table class="w-full text-xs sm:text-sm text-center border-collapse bg-white rounded-xl overflow-hidden shadow-sm">
+                  <thead>
+                    <tr class="bg-brandBlue-600 text-white">
+                      <th class="p-2.5">Harga Telur / kg</th>
+                      <th class="p-2.5">Permintaan (Qd)</th>
+                      <th class="p-2.5">Penawaran (Qs)</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-200">
+                    <tr><td class="p-2 font-bold">Rp26.000</td><td class="p-2">120 kg</td><td class="p-2">60 kg</td></tr>
+                    <tr><td class="p-2 font-bold">Rp28.000</td><td class="p-2">100 kg</td><td class="p-2">80 kg</td></tr>
+                    <tr class="bg-brandYellow-100"><td class="p-2 font-bold">Rp30.000</td><td class="p-2"><input type="number" id="lkpd-qd-eq" value="${l.qdEq || ''}" placeholder="?" class="w-16 p-1 border rounded text-center font-bold" /> kg</td><td class="p-2">90 kg</td></tr>
+                    <tr><td class="p-2 font-bold">Rp32.000</td><td class="p-2">70 kg</td><td class="p-2">110 kg</td></tr>
+                  </tbody>
+                </table>
+                <div class="mt-3">
+                  <label class="font-bold text-xs text-purple-900 block mb-1">Berapakah Harga Keseimbangan (Pe) & Jumlah Keseimbangan (Qe) pada tabel di atas?</label>
+                  <input type="text" id="lkpd-eq-ans" value="${l.eqAns || ''}" placeholder="Contoh: Pe = Rp30.000 dan Qe = 90 kg" class="w-full p-2.5 rounded-xl border border-purple-300 text-sm bg-white" />
+                </div>
+              </div>
+
+              <!-- Visual Kurva Keseimbangan LKPD -->
+              <div class="lg:col-span-6 bg-white p-3 rounded-2xl border border-slate-200">
+                <span class="text-xs font-bold text-slate-600 block text-center mb-1">Ilustrasi Grafik Keseimbangan Telur</span>
+                <svg viewBox="0 0 320 160" class="w-full h-36">
+                  <line x1="40" y1="15" x2="40" y2="135" stroke="#334155" stroke-width="2" />
+                  <line x1="40" y1="135" x2="290" y2="135" stroke="#334155" stroke-width="2" />
+                  <line x1="70" y1="30" x2="250" y2="120" stroke="#ef4444" stroke-width="3" />
+                  <line x1="70" y1="120" x2="250" y2="30" stroke="#16a34a" stroke-width="3" />
+                  <circle cx="160" cy="75" r="6" fill="#facc15" stroke="#0f172a" stroke-width="2" />
+                  <text x="170" y="78" fill="#0f172a" font-size="10" font-weight="bold">Titik E (Rp30.000, 90kg)</text>
+                  <text x="255" y="122" fill="#dc2626" font-size="10" font-weight="bold">D</text>
+                  <text x="255" y="32" fill="#15803d" font-size="10" font-weight="bold">S</text>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pertanyaan Diskusi, Kesimpulan & Refleksi -->
+          <div class="space-y-3 text-sm">
+            <div>
+              <label class="font-bold text-slate-800 block mb-1">Pertanyaan Diskusi: Mengapa pemerintah sering mengadakan "Operasi Pasar Murah" saat harga bahan pokok melonjak?</label>
+              <textarea id="lkpd-diskusi" rows="2" class="w-full p-2.5 rounded-xl border border-slate-300">${l.diskusi || ''}</textarea>
+            </div>
+            <div>
+              <label class="font-bold text-slate-800 block mb-1">Kesimpulan Kelompok:</label>
+              <textarea id="lkpd-kesimpulan" rows="2" class="w-full p-2.5 rounded-xl border border-slate-300">${l.kesimpulan || ''}</textarea>
+            </div>
+            <div>
+              <label class="font-bold text-slate-800 block mb-1">Refleksi Pembelajaran:</label>
+              <textarea id="lkpd-refleksi" rows="2" class="w-full p-2.5 rounded-xl border border-slate-300">${l.refleksi || ''}</textarea>
+            </div>
+          </div>
+
+          <!-- Tombol Simpan & Cetak -->
+          <div class="flex flex-wrap justify-end gap-3 no-print">
+            <button onclick="saveLKPD()" class="btn-3d px-6 py-3 rounded-2xl bg-brandGreen-600 hover:bg-brandGreen-700 text-white font-bold text-sm">
+              <i class="fa-solid fa-floppy-disk mr-2"></i> Simpan LKPD
+            </button>
+            <button onclick="window.print()" class="btn-3d px-6 py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm">
+              <i class="fa-solid fa-file-pdf mr-2"></i> Cetak / Unduh PDF
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    function saveLKPD() {
+      appState.lkpdData = {
+        kelompok: document.getElementById('lkpd-kelompok').value,
+        kelas: document.getElementById('lkpd-kelas').value,
+        anggota: document.getElementById('lkpd-anggota').value,
+        kasus1: document.getElementById('lkpd-kasus1').value,
+        kasus2: document.getElementById('lkpd-kasus2').value,
+        kasus3: document.getElementById('lkpd-kasus3').value,
+        kasus4: document.getElementById('lkpd-kasus4').value,
+        jenis: document.getElementById('lkpd-jenis').value,
+        faktor: document.getElementById('lkpd-faktor').value,
+        qdEq: document.getElementById('lkpd-qd-eq').value,
+        eqAns: document.getElementById('lkpd-eq-ans').value,
+        diskusi: document.getElementById('lkpd-diskusi').value,
+        kesimpulan: document.getElementById('lkpd-kesimpulan').value,
+        refleksi: document.getElementById('lkpd-refleksi').value
+      };
+      saveState();
+      playSFX('coin');
+      showToast('Jawaban LKPD Kelompok berhasil disimpan!', 'success');
+    }
+
+    /*************************************************************************
+     * 10. MENU 6: EVALUASI AKHIR (30 SOAL LENGKAP + SERTIFIKAT KELULUSAN)
+     * - 15 Pilihan Ganda, 5 Benar/Salah, 5 PG Kompleks, 5 Menjodohkan
+     *************************************************************************/
+    const EVAL_BANK = [
+      // 15 PILIHAN GANDA
+      { id: 1, type: 'pg', lvl: 'Mudah', q: 'Nilai tukar suatu barang atau jasa yang dinyatakan dalam satuan uang disebut...', opts: ['Biaya produksi', 'Harga', 'Modal usaha', 'Laba bersih'], ans: 1, exp: 'Harga adalah nilai tukar barang/jasa yang diukur dengan satuan uang.' },
+      { id: 2, type: 'pg', lvl: 'Mudah', q: 'Berikut ini yang BUKAN merupakan unsur utama terbentuknya suatu pasar adalah...', opts: ['Adanya penjual', 'Adanya pembeli', 'Adanya bangunan gedung bertingkat', 'Adanya kesepakatan harga'], ans: 2, exp: 'Pasar tidak selalu membutuhkan gedung bertingkat karena bisa berlangsung secara abstrak/online.' },
+      { id: 3, type: 'pg', lvl: 'Sedang', q: 'Pasar berfungsi menyalurkan barang dari produsen di desa agar mudah diperoleh konsumen di kota. Hal ini mencerminkan fungsi pasar sebagai sarana...', opts: ['Promosi', 'Distribusi', 'Pembentuk harga', 'Konsumsi'], ans: 1, exp: 'Fungsi distribusi pasar adalah memperlancar penyaluran barang dari produsen ke konsumen.' },
+      { id: 4, type: 'pg', lvl: 'Mudah', q: 'Ciri khas utama yang membedakan pasar tradisional dengan pasar modern adalah...', opts: ['Tidak ada penjual di pasar tradisional', 'Adanya proses tawar-menawar langsung antara penjual dan pembeli', 'Semua barang diberi barcode', 'Transaksi hanya memakai kartu kredit'], ans: 1, exp: 'Pasar tradisional identik dengan proses tawar-menawar harga secara langsung.' },
+      { id: 5, type: 'pg', lvl: 'Sedang', q: 'Transaksi jual beli melalui marketplace daring (e-commerce) di mana penjual dan pembeli tidak bertatap muka langsung termasuk jenis...', opts: ['Pasar konkret', 'Pasar abstrak', 'Pasar kaget', 'Pasar loak'], ans: 1, exp: 'Pasar abstrak mempertemukan penjual dan pembeli tanpa tatap muka fisik.' },
+      { id: 6, type: 'pg', lvl: 'Sedang', q: 'Kegiatan ekspor kopi Lampung dan karet Sumatra ke berbagai negara di dunia merupakan contoh dari...', opts: ['Pasar lokal', 'Pasar internasional', 'Pasar kecamatan', 'Pasar mingguan'], ans: 1, exp: 'Perdagangan antarnegara merupakan ruang lingkup pasar internasional.' },
+      { id: 7, type: 'pg', lvl: 'Mudah', q: 'Sejumlah barang atau jasa yang ingin dan mampu dibeli oleh konsumen pada berbagai tingkat harga tertentu disebut...', opts: ['Penawaran', 'Permintaan', 'Produksi', 'Distribusi'], ans: 1, exp: 'Permintaan (demand) adalah jumlah barang yang ingin dan mampu dibeli konsumen.' },
+      { id: 8, type: 'pg', lvl: 'Sedang', q: 'Menurut hukum permintaan, apabila harga gula pasir naik dari Rp14.000/kg menjadi Rp18.000/kg (ceteris paribus), maka...', opts: ['Jumlah gula pasir yang diminta konsumen berkurang', 'Jumlah gula pasir yang diminta meningkat tajam', 'Pembeli memborong semua stok gula', 'Kurva permintaan menghilang'], ans: 0, exp: 'Harga dan jumlah permintaan berbanding terbalik: jika harga naik, jumlah yang diminta turun.' },
+      { id: 9, type: 'pg', lvl: 'Sedang', q: 'Bentuk kurva penawaran (supply) pada grafik ekonomi digambarkan bergerak...', opts: ['Turun dari kiri atas ke kanan bawah', 'Naik dari kiri bawah ke kanan atas', 'Mendatar sejajar sumbu horizontal', 'Tegak lurus ke bawah'], ans: 1, exp: 'Kurva penawaran naik dari kiri bawah ke kanan atas karena harga berbanding lurus dengan jumlah penawaran.' },
+      { id: 10, type: 'pg', lvl: 'Sukar', q: 'Penggunaan mesin panen modern dan bibit unggul membuat hasil panen petani padi meningkat pesat. Dampak ekonomi yang terjadi di pasar adalah...', opts: ['Kurva penawaran beras bergeser ke kanan karena jumlah penawaran bertambah', 'Permintaan beras menjadi nol', 'Biaya produksi naik sepuluh kali lipat', 'Harga beras langsung naik drastis'], ans: 0, exp: 'Kemajuan teknologi meningkatkan efisiensi produksi sehingga penawaran bertambah.' },
+      { id: 11, type: 'pg', lvl: 'Sedang', q: 'Harga keseimbangan (equilibrium price) di pasar terbentuk apabila...', opts: ['Jumlah barang yang diminta sama dengan jumlah barang yang ditawarkan (Qd = Qs)', 'Harga ditetapkan setinggi-tingginya oleh penjual', 'Tidak ada pembeli yang datang ke pasar', 'Barang dagangan habis terbakar'], ans: 0, exp: 'Keseimbangan pasar terjadi pada titik perpotongan kurva D dan S saat Qd = Qs.' },
+      { id: 12, type: 'pg', lvl: 'Sukar', q: 'Diketahui pada harga Rp10.000/kg, jumlah permintaan beras 100 kg sedangkan penawaran hanya 40 kg. Kondisi pasar pada tingkat harga tersebut mengalami...', opts: ['Kelebihan penawaran (surplus) 60 kg', 'Kelebihan permintaan (shortage) 60 kg', 'Keseimbangan pasar sempurna', 'Penurunan harga besar-besaran'], ans: 1, exp: 'Qd (100 kg) > Qs (40 kg), sehingga terjadi kelebihan permintaan (shortage) sebesar 60 kg.' },
+      { id: 13, type: 'pg', lvl: 'Sukar', q: 'Apabila harga pasar berada di atas harga keseimbangan sehingga jumlah penawaran melebihi jumlah permintaan (Qs > Qd), maka mekanisme pasar akan mendorong harga untuk...', opts: ['Turun menuju titik keseimbangan agar barang laku terjual', 'Naik terus tanpa batas', 'Tetap diam selamanya', 'Dilarang beredar'], ans: 0, exp: 'Surplus barang membuat penjual bersaing menurunkan harga hingga kembali ke titik keseimbangan.' },
+      { id: 14, type: 'pg', lvl: 'Sedang', q: 'Harga cabai merah sering melonjak tajam pada musim hujan karena...', opts: ['Cabai tidak dibutuhkan saat hujan', 'Banyak tanaman cabai membusuk sehingga pasokan (penawaran) di pasar berkurang', 'Permintaan cabai hilang total', 'Petani membagikan cabai secara gratis'], ans: 1, exp: 'Curah hujan tinggi merusak tanaman cabai sehingga terjadi kelangkaan stok dan harga naik.' },
+      { id: 15, type: 'pg', lvl: 'Mudah', q: 'Sikap seorang konsumen cerdas ketika menghadapi kenaikan harga salah satu bahan makanan adalah...', opts: ['Membeli secara berlebihan (panic buying)', 'Mencari barang pengganti (substitusi) yang lebih terjangkau dan menyusun skala prioritas', 'Menimbun barang di gudang rumah', 'Meminjam uang tanpa perhitungan'], ans: 1, exp: 'Konsumen cerdas menyusun skala prioritas dan memanfaatkan barang substitusi yang harganya lebih stabil.' },
+
+      // 5 BENAR ATAU SALAH
+      { id: 16, type: 'tf', lvl: 'Mudah', q: 'Harga juga berfungsi sebagai sinyal bagi produsen untuk menentukan jenis dan jumlah barang yang akan diproduksi.', ans: true, exp: 'BENAR. Harga tinggi memberi sinyal keuntungan bagi produsen untuk menambah produksi.' },
+      { id: 17, type: 'tf', lvl: 'Mudah', q: 'Pasar swalayan atau supermarket termasuk kategori pasar tradisional karena pembeli mengambil barangnya sendiri.', ans: false, exp: 'SALAH. Supermarket adalah contoh pasar modern dengan pelayanan mandiri dan harga pasti.' },
+      { id: 18, type: 'tf', lvl: 'Sedang', q: 'Pendapatan masyarakat yang meningkat cenderung meningkatkan permintaan terhadap barang dan jasa berkualitas.', ans: true, exp: 'BENAR. Kenaikan pendapatan meningkatkan daya beli konsumen.' },
+      { id: 19, type: 'tf', lvl: 'Sedang', q: 'Hukum penawaran menyatakan bahwa apabila harga turun, penjual akan menawarkan barang dalam jumlah yang jauh lebih banyak.', ans: false, exp: 'SALAH. Jika harga turun, penjual justru mengurangi penawaran karena keuntungan menipis.' },
+      { id: 20, type: 'tf', lvl: 'Sedang', q: 'Menjelang hari raya keagamaan, lonjakan permintaan masyarakat sering menyebabkan harga telur dan daging ayam meningkat.', ans: true, exp: 'BENAR. Peningkatan permintaan musiman mendorong harga naik.' },
+
+      // 5 PILIHAN GANDA KOMPLEKS (Pilih 2 Jawaban Benar)
+      { id: 21, type: 'pgk', lvl: 'Sedang', q: 'Pilihlah DUA (2) pernyataan yang tepat mengenai ciri-ciri Pasar Modern!', opts: ['Harga barang sudah tercantum pasti (harga pas)', 'Terjadi proses tawar-menawar langsung yang ramai', 'Pembeli melayani dirinya sendiri (swalayan)', 'Hanya buka seminggu sekali di lapangan desa'], ans: [0, 2], exp: 'Pasar modern memiliki ciri harga pas (label/barcode) dan sistem pelayanan mandiri (swalayan).' },
+      { id: 22, type: 'pgk', lvl: 'Sedang', q: 'Pilihlah DUA (2) faktor yang dapat menyebabkan permintaan suatu barang meningkat!', opts: ['Harga barang itu sendiri mengalami penurunan (diskon)', 'Pendapatan rata-rata konsumen mengalami kenaikan', 'Barang tersebut sudah ketinggalan zaman dan tidak disukai', 'Harga barang tersebut naik tiga kali lipat'], ans: [0, 1], exp: 'Penurunan harga barang dan kenaikan pendapatan konsumen akan meningkatkan jumlah permintaan.' },
+      { id: 23, type: 'pgk', lvl: 'Sukar', q: 'Pilihlah DUA (2) faktor yang dapat meningkatkan jumlah penawaran barang oleh produsen!', opts: ['Penerapan teknologi mesin produksi yang lebih modern', 'Penurunan harga bahan baku produksi', 'Terjadinya bencana banjir yang merusak pabrik', 'Kenaikan pajak produksi yang sangat tinggi'], ans: [0, 1], exp: 'Teknologi modern dan bahan baku yang lebih murah meningkatkan kapasitas penawaran produsen.' },
+      { id: 24, type: 'pgk', lvl: 'Sukar', q: 'Pilihlah DUA (2) pernyataan yang benar tentang Harga Keseimbangan (Equilibrium)!', opts: ['Terbentuk pada titik perpotongan kurva permintaan dan kurva penawaran', 'Jumlah barang yang diminta sama dengan jumlah barang yang ditawarkan', 'Terjadi ketika stok penjual menumpuk dan tidak laku', 'Harga selalu berubah setiap detik tanpa kesepakatan'], ans: [0, 1], exp: 'Keseimbangan terjadi di perpotongan kurva D & S saat Qd = Qs.' },
+      { id: 25, type: 'pgk', lvl: 'Sedang', q: 'Pilihlah DUA (2) penyebab sering terjadinya kenaikan harga beras dan cabai di Indonesia!', opts: ['Gangguan cuaca ekstrem atau gagal panen di sentra pertanian', 'Lonjakan permintaan menjelang hari raya besar', 'Terlalu banyaknya stok panen raya di gudang', 'Tidak ada masyarakat yang mengonsumsi beras dan cabai'], ans: [0, 1], exp: 'Gagal panen (penawaran turun) dan lonjakan permintaan hari raya memicu kenaikan harga pangan.' },
+
+      // 5 MENJODOHKAN
+      { id: 26, type: 'match', lvl: 'Mudah', q: 'Jodohkan fungsi pasar di kiri dengan penjelasan yang tepat di kanan!', pairs: [
+        { left: 'Fungsi Distribusi', right: 'Menyalurkan barang dari produsen ke konsumen' },
+        { left: 'Fungsi Pembentuk Harga', right: 'Menciptakan harga kesepakatan penjual & pembeli' },
+        { left: 'Fungsi Promosi', right: 'Memperkenalkan produk baru kepada masyarakat' }
+      ], exp: 'Tiga fungsi utama pasar adalah distribusi, pembentuk harga, dan promosi.' },
+      { id: 27, type: 'match', lvl: 'Mudah', q: 'Jodohkan jenis pasar di kiri dengan contoh konkretnya di kanan!', pairs: [
+        { left: 'Pasar Tradisional', right: 'Pasar sayur dengan proses tawar-menawar' },
+        { left: 'Pasar Modern', right: 'Minimarket dengan label harga pasti' },
+        { left: 'Pasar Abstrak', right: 'Toko online (marketplace) di internet' }
+      ], exp: 'Pasar tradisional ada tawar-menawar, modern berharga pas, abstrak via daring.' },
+      { id: 28, type: 'match', lvl: 'Sedang', q: 'Jodohkan istilah ekonomi di kiri dengan arah pergerakan kurvanya di kanan!', pairs: [
+        { left: 'Kurva Permintaan (D)', right: 'Turun dari kiri atas ke kanan bawah' },
+        { left: 'Kurva Penawaran (S)', right: 'Naik dari kiri bawah ke kanan atas' },
+        { left: 'Titik Equilibrium (E)', right: 'Perpotongan antara kurva D dan kurva S' }
+      ], exp: 'Kurva D berslope negatif (turun), kurva S berslope positif (naik), E adalah perpotongannya.' },
+      { id: 29, type: 'match', lvl: 'Sukar', q: 'Jodohkan kondisi pasar di kiri dengan akibat ekonominya di kanan!', pairs: [
+        { left: 'Harga di bawah keseimbangan', right: 'Kelebihan permintaan (shortage)' },
+        { left: 'Harga di atas keseimbangan', right: 'Kelebihan penawaran (surplus)' },
+        { left: 'Qd sama dengan Qs', right: 'Terbentuk harga keseimbangan pasar' }
+      ], exp: 'Harga rendah memicu shortage; harga tinggi memicu surplus; Qd = Qs membentuk equilibrium.' },
+      { id: 30, type: 'match', lvl: 'Sedang', q: 'Jodohkan peran pelaku ekonomi di kiri dengan tujuannya di pasar di kanan!', pairs: [
+        { left: 'Konsumen Cerdas', right: 'Memperoleh barang berkualitas sesuai daya beli' },
+        { left: 'Produsen / Penjual', right: 'Menawarkan barang dan meraih keuntungan wajar' },
+        { left: 'Pemerintah', right: 'Menjaga stabilitas harga kebutuhan pokok' }
+      ], exp: 'Konsumen mencari kepuasan optimal, produsen mencari laba, pemerintah menjaga stabilitas pasar.' }
+    ];
+
+    let evalState = { started: false, finished: false, list: [], idx: 0, answers: {} };
+
+    function renderEvaluasi(container) {
+      currentNarrationText = "Menu Evaluasi Akhir Pembelajaran Pasar Pintar. Tersedia tiga puluh soal yang mencakup seluruh materi harga dan pasar. Raih nilai minimal delapan puluh untuk mendapatkan Sertifikat Kelulusan Digital!";
+
+      if (!evalState.started) {
+        container.innerHTML = `
+          <div class="max-w-3xl mx-auto bg-white rounded-3xl p-6 sm:p-10 shadow-xl border-2 border-rose-200 text-center space-y-6">
+            <div class="w-20 h-20 mx-auto rounded-3xl bg-rose-100 text-rose-600 flex items-center justify-center text-4xl">
+              <i class="fa-solid fa-award"></i>
+            </div>
+            <div>
+              <span class="px-3 py-1 rounded-full bg-rose-100 text-rose-700 font-extrabold text-xs">EVALUASI KOMPETENSI IPS FASE D</span>
+              <h2 class="text-2xl sm:text-3xl font-display font-bold text-slate-900 mt-2">EVALUASI AKHIR HARGA DAN PASAR</h2>
+              <p class="text-sm sm:text-base text-slate-600 mt-2">30 Soal Lengkap mencakup seluruh 7 Bab Materi dengan penilaian otomatis.</p>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs font-bold">
+              <div class="p-3 rounded-2xl bg-brandOrange-50 text-brandOrange-700 border border-brandOrange-200">15 Pilihan Ganda</div>
+              <div class="p-3 rounded-2xl bg-brandGreen-50 text-brandGreen-700 border border-brandGreen-200">5 Benar / Salah</div>
+              <div class="p-3 rounded-2xl bg-brandYellow-100 text-amber-800 border border-brandYellow-300">5 PG Kompleks</div>
+              <div class="p-3 rounded-2xl bg-brandBlue-50 text-brandBlue-900 border border-brandBlue-200">5 Menjodohkan</div>
+            </div>
+            <div class="max-w-md mx-auto text-left">
+              <label class="block text-xs font-bold text-slate-700 mb-1">Nama Lengkap Siswa (Tercetak di Sertifikat):</label>
+              <input type="text" id="eval-name-input" value="${appState.studentName || ''}" placeholder="Ketik nama lengkapmu..." class="w-full px-4 py-3 rounded-2xl border-2 border-brandOrange-300 focus:border-brandOrange-500 outline-none font-bold text-sm" />
+            </div>
+            <div class="flex flex-wrap justify-center gap-3 pt-2">
+              <button onclick="beginEval()" class="btn-3d px-8 py-4 rounded-3xl bg-gradient-to-r from-brandOrange-500 to-rose-600 text-white font-display font-bold text-lg">
+                <i class="fa-solid fa-play mr-2"></i> Mulai Kerjakan 30 Soal
+              </button>
+              ${appState.evalResult ? `<button onclick="showSavedEval()" class="btn-3d px-6 py-4 rounded-3xl bg-brandBlue-100 text-brandBlue-900 font-bold text-sm">Lihat Nilai Terakhir (${appState.evalResult.score})</button>` : ''}
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      if (evalState.finished) {
+        renderEvalSummary(container);
+        return;
+      }
+
+      const q = evalState.list[evalState.idx];
+      const idx = evalState.idx;
+      const ans = evalState.answers[q.id];
+      const badges = { pg: 'Pilihan Ganda', tf: 'Benar atau Salah', pgk: 'Pilihan Ganda Kompleks (Pilih 2)', match: 'Menjodohkan' };
+      const lvlStyle = { Mudah: 'bg-brandGreen-100 text-brandGreen-800', Sedang: 'bg-brandYellow-100 text-amber-800', Sukar: 'bg-red-100 text-red-800' };
+
+      container.innerHTML = `
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <div class="lg:col-span-8 bg-white rounded-3xl p-6 sm:p-8 shadow-xl border-2 border-brandOrange-200 flex flex-col justify-between">
+            <div>
+              <div class="flex flex-wrap items-center justify-between gap-2 border-b pb-4 mb-5">
+                <div class="flex items-center gap-2">
+                  <span class="px-3.5 py-1.5 rounded-xl bg-brandOrange-500 text-white font-display font-bold text-sm">Soal ${idx + 1} / 30</span>
+                  <span class="px-3 py-1 rounded-xl bg-slate-100 text-slate-700 font-bold text-xs">${badges[q.type]}</span>
+                </div>
+                <span class="px-3 py-1 rounded-full font-extrabold text-xs ${lvlStyle[q.lvl]}">Level: ${q.lvl}</span>
+              </div>
+
+              <h3 class="text-base sm:text-lg font-bold text-slate-800 leading-relaxed mb-6">${q.q}</h3>
+              <div>${renderEvalInput(q, ans)}</div>
+            </div>
+
+            <div class="pt-6 mt-6 border-t flex items-center justify-between gap-3">
+              <button onclick="moveEval(-1)" ${idx === 0 ? 'disabled class="opacity-40 px-5 py-3 rounded-2xl bg-slate-200 text-slate-600 font-bold text-sm"' : 'class="btn-3d px-5 py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-sm"'}>
+                <i class="fa-solid fa-chevron-left mr-1"></i> Sebelumnya
+              </button>
+              ${idx < 29 ? `
+                <button onclick="moveEval(1)" class="btn-3d px-6 py-3 rounded-2xl bg-brandBlue-600 hover:bg-brandBlue-700 text-white font-bold text-sm">
+                  Selanjutnya <i class="fa-solid fa-chevron-right ml-1"></i>
+                </button>
+              ` : `
+                <button onclick="finishEval()" class="btn-3d px-6 py-3 rounded-2xl bg-brandGreen-600 hover:bg-brandGreen-700 text-white font-bold text-sm">
+                  <i class="fa-solid fa-check-double mr-1"></i> Selesai & Lihat Nilai
+                </button>
+              `}
+            </div>
+          </div>
+
+          <div class="lg:col-span-4 bg-white rounded-3xl p-5 shadow-lg border-2 border-slate-200 h-fit">
+            <h4 class="font-display font-bold text-base text-slate-900 mb-3"><i class="fa-solid fa-table-cells mr-1.5 text-brandOrange-500"></i>Indikator Nomor Soal</h4>
+            <div class="grid grid-cols-6 gap-2 mb-4">
+              ${evalState.list.map((item, i) => {
+                const done = isAnswered(item, evalState.answers[item.id]);
+                const cur = i === idx;
+                return `<button onclick="jumpEval(${i})" class="h-9 rounded-xl font-bold text-xs transition ${cur ? 'ring-2 ring-brandOrange-500 bg-brandBlue-600 text-white' : done ? 'bg-brandGreen-500 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}">${i + 1}</button>`;
+              }).join('')}
+            </div>
+            <button onclick="finishEval()" class="btn-3d w-full py-3 rounded-2xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-sm">Kumpulkan Jawaban</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderEvalInput(q, ans) {
+      if (q.type === 'pg') {
+        return `<div class="space-y-3">
+          ${q.opts.map((o, i) => `
+            <button onclick="setEvalAns(${q.id}, ${i})" class="w-full text-left p-4 rounded-2xl border-2 transition flex items-center gap-3 font-semibold text-sm ${ans === i ? 'border-brandOrange-500 bg-brandOrange-50 text-brandOrange-900' : 'border-slate-200 hover:border-brandOrange-300'}">
+              <span class="w-8 h-8 rounded-xl flex items-center justify-center font-bold shrink-0 ${ans === i ? 'bg-brandOrange-500 text-white' : 'bg-slate-100 text-slate-700'}">${String.fromCharCode(65 + i)}</span>
+              <span>${o}</span>
+            </button>
+          `).join('')}
+        </div>`;
+      }
+      if (q.type === 'tf') {
+        return `<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <button onclick="setEvalAns(${q.id}, true)" class="p-5 rounded-2xl border-2 font-display font-bold text-lg transition ${ans === true ? 'border-brandGreen-600 bg-brandGreen-50 text-brandGreen-800' : 'border-slate-200'}"><i class="fa-solid fa-check mr-2 text-brandGreen-600"></i>BENAR</button>
+          <button onclick="setEvalAns(${q.id}, false)" class="p-5 rounded-2xl border-2 font-display font-bold text-lg transition ${ans === false ? 'border-red-600 bg-red-50 text-red-800' : 'border-slate-200'}"><i class="fa-solid fa-xmark mr-2 text-red-600"></i>SALAH</button>
+        </div>`;
+      }
+      if (q.type === 'pgk') {
+        const arr = Array.isArray(ans) ? ans : [];
+        return `<div class="space-y-3">
+          <p class="text-xs font-bold text-amber-700">*Pilih tepat 2 jawaban yang benar:</p>
+          ${q.opts.map((o, i) => {
+            const chk = arr.includes(i);
+            return `<button onclick="toggleEvalPGK(${q.id}, ${i})" class="w-full text-left p-4 rounded-2xl border-2 transition flex items-center gap-3 font-semibold text-sm ${chk ? 'border-amber-500 bg-amber-50' : 'border-slate-200'}">
+              <i class="fa-solid ${chk ? 'fa-square-check text-amber-600' : 'fa-square text-slate-300'} text-xl"></i>
+              <span>${o}</span>
+            </button>`;
+          }).join('')}
+        </div>`;
+      }
+      if (q.type === 'match') {
+        const obj = ans || {};
+        const rights = q.pairs.map(p => p.right).sort();
+        return `<div class="space-y-3">
+          ${q.pairs.map((p, idx) => `
+            <div class="p-3.5 rounded-2xl bg-slate-50 border flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <span class="font-bold text-sm text-brandBlue-900">${idx + 1}. ${p.left}</span>
+              <select onchange="setEvalMatch(${q.id}, ${idx}, this.value)" class="p-2.5 rounded-xl border border-brandBlue-300 bg-white text-xs sm:text-sm font-semibold">
+                <option value="">-- Pilih Pasangan --</option>
+                ${rights.map(r => `<option value="${r}" ${obj[idx] === r ? 'selected' : ''}>${r}</option>`).join('')}
+              </select>
+            </div>
+          `).join('')}
+        </div>`;
+      }
+    }
+
+    function isAnswered(q, ans) {
+      if (ans === undefined || ans === null) return false;
+      if (q.type === 'pgk') return Array.isArray(ans) && ans.length > 0;
+      if (q.type === 'match') return Object.keys(ans).length === q.pairs.length && Object.values(ans).every(v => v !== '');
+      return true;
+    }
+
+    function setEvalAns(id, val) {
+      playSFX('click');
+      evalState.answers[id] = val;
+      renderEvaluasi(document.getElementById('app-content'));
+    }
+
+    function toggleEvalPGK(id, idx) {
+      playSFX('click');
+      let arr = Array.isArray(evalState.answers[id]) ? [...evalState.answers[id]] : [];
+      if (arr.includes(idx)) arr = arr.filter(x => x !== idx);
+      else { if (arr.length >= 2) arr.shift(); arr.push(idx); }
+      evalState.answers[id] = arr;
+      renderEvaluasi(document.getElementById('app-content'));
+    }
+
+    function setEvalMatch(id, idx, val) {
+      playSFX('click');
+      if (!evalState.answers[id]) evalState.answers[id] = {};
+      evalState.answers[id][idx] = val;
+      renderEvaluasi(document.getElementById('app-content'));
+    }
+
+    function beginEval() {
+      const name = document.getElementById('eval-name-input').value.trim();
+      if (!name) return showToast('Masukkan nama lengkapmu dulu ya!', 'warning');
+      appState.studentName = name;
+      saveState();
+      evalState = { started: true, finished: false, list: [...EVAL_BANK].sort(() => Math.random() - 0.5), idx: 0, answers: {} };
+      playSFX('click');
+      renderEvaluasi(document.getElementById('app-content'));
+    }
+
+    function moveEval(dir) {
+      evalState.idx = Math.max(0, Math.min(29, evalState.idx + dir));
+      renderEvaluasi(document.getElementById('app-content'));
+    }
+
+    function jumpEval(i) {
+      evalState.idx = i;
+      renderEvaluasi(document.getElementById('app-content'));
+    }
+
+    function finishEval() {
+      let correct = 0;
+      const details = evalState.list.map(q => {
+        const ans = evalState.answers[q.id];
+        let ok = false, uTxt = 'Tidak dijawab', kTxt = '';
+        if (q.type === 'pg') {
+          ok = ans === q.ans;
+          uTxt = ans !== undefined ? q.opts[ans] : 'Tidak dijawab';
+          kTxt = q.opts[q.ans];
+        } else if (q.type === 'tf') {
+          ok = ans === q.ans;
+          uTxt = ans === true ? 'Benar' : ans === false ? 'Salah' : 'Tidak dijawab';
+          kTxt = q.ans ? 'Benar' : 'Salah';
+        } else if (q.type === 'pgk') {
+          ok = (Array.isArray(ans) ? [...ans].sort().join(',') : '') === [...q.ans].sort().join(',');
+          uTxt = Array.isArray(ans) && ans.length ? ans.map(i => q.opts[i]).join('; ') : 'Tidak dijawab';
+          kTxt = q.ans.map(i => q.opts[i]).join('; ');
+        } else if (q.type === 'match') {
+          const obj = ans || {};
+          ok = q.pairs.every((p, i) => obj[i] === p.right);
+          uTxt = q.pairs.map((p, i) => `${p.left} → ${obj[i] || '?'}`).join(' | ');
+          kTxt = q.pairs.map(p => `${p.left} → ${p.right}`).join(' | ');
+        }
+        if (ok) correct++;
+        return { q: q.q, ok, uTxt, kTxt, exp: q.exp };
+      });
+
+      const score = Math.round((correct / 30) * 100);
+      const passed = score >= 80;
+      const predicate = score >= 90 ? 'Sangat Baik (Istimewa)' : score >= 80 ? 'Baik (Tuntas)' : score >= 70 ? 'Cukup (Perlu Pengayaan)' : 'Perlu Bimbingan';
+
+      appState.evalResult = { score, correct, passed, predicate, details };
+      saveState();
+      evalState.finished = true;
+      if (passed) playSFX('win'); else playSFX('correct');
+      renderEvaluasi(document.getElementById('app-content'));
+    }
+
+    function showSavedEval() {
+      evalState.started = true;
+      evalState.finished = true;
+      renderEvaluasi(document.getElementById('app-content'));
+    }
+
+    function renderEvalSummary(container) {
+      const r = appState.evalResult;
+      container.innerHTML = `
+        <div class="space-y-6">
+          <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-xl border-2 ${r.passed ? 'border-brandGreen-500' : 'border-amber-400'} text-center space-y-4">
+            <span class="px-4 py-1.5 rounded-full text-xs font-extrabold ${r.passed ? 'bg-brandGreen-100 text-brandGreen-800' : 'bg-amber-100 text-amber-800'}">
+              ${r.passed ? 'SELAMAT! KAMU DINYATAKAN TUNTAS (NILAI ≥ 80)' : 'BELUM TUNTAS — AYO ULANGI EVALUASI'}
+            </span>
+            <h2 class="text-2xl sm:text-3xl font-display font-bold text-slate-900">HASIL EVALUASI: ${appState.studentName}</h2>
+            <div class="flex flex-wrap justify-center gap-5 py-2">
+              <div class="px-8 py-4 rounded-3xl bg-brandOrange-50 border-2 border-brandOrange-300">
+                <span class="text-xs font-bold text-brandOrange-700 block">NILAI AKHIR</span>
+                <span class="text-5xl font-display font-extrabold text-brandOrange-600">${r.score}</span>
+              </div>
+              <div class="px-6 py-4 rounded-3xl bg-brandGreen-50 border-2 border-brandGreen-200 flex flex-col justify-center">
+                <span class="text-xs font-bold text-brandGreen-700">Benar</span>
+                <span class="text-2xl font-display font-bold text-brandGreen-900">${r.correct} / 30</span>
+              </div>
+              <div class="px-6 py-4 rounded-3xl bg-brandBlue-50 border-2 border-brandBlue-200 flex flex-col justify-center">
+                <span class="text-xs font-bold text-brandBlue-700">Predikat</span>
+                <span class="text-lg font-display font-bold text-brandBlue-900">${r.predicate}</span>
+              </div>
+            </div>
+            <div class="flex flex-wrap justify-center gap-3 pt-2">
+              ${r.passed ? `
+                <button onclick="openCertificateModal('KELULUSAN EVALUASI HARGA DAN PASAR', 'Telah berhasil menyelesaikan Evaluasi Akhir IPS Kelas VII dengan Nilai ${r.score} (${r.predicate}).')" class="btn-3d px-6 py-3.5 rounded-2xl bg-gradient-to-r from-brandYellow-400 to-amber-500 text-slate-900 font-display font-extrabold text-sm">
+                  <i class="fa-solid fa-certificate mr-2"></i> Buka & Cetak Sertifikat Digital
+                </button>
+              ` : ''}
+              <button onclick="evalState={started:false,finished:false,list:[],idx:0,answers:{}};renderEvaluasi(document.getElementById('app-content'));" class="btn-3d px-6 py-3.5 rounded-2xl bg-brandOrange-500 text-white font-bold text-sm">
+                <i class="fa-solid fa-rotate-right mr-2"></i> Ulangi Evaluasi
+              </button>
+            </div>
+          </div>
+
+          <!-- Kunci Jawaban & Pembahasan -->
+          <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-lg border border-slate-200">
+            <h3 class="font-display font-bold text-xl text-slate-900 mb-4"><i class="fa-solid fa-list-check mr-2 text-brandOrange-500"></i>Kunci Jawaban & Pembahasan 30 Soal</h3>
+            <div class="space-y-3 max-h-[520px] overflow-y-auto pr-2">
+              ${r.details.map((d, i) => `
+                <div class="p-4 rounded-2xl border ${d.ok ? 'bg-brandGreen-50/50 border-brandGreen-200' : 'bg-red-50/50 border-red-200'} text-sm">
+                  <div class="flex justify-between gap-2">
+                    <p class="font-bold text-slate-800">${i + 1}. ${d.q}</p>
+                    <span class="shrink-0 px-2.5 py-0.5 rounded-full text-xs font-bold ${d.ok ? 'bg-brandGreen-500 text-white' : 'bg-red-500 text-white'}">${d.ok ? 'Benar' : 'Salah'}</span>
+                  </div>
+                  <p class="text-xs text-slate-600 mt-1">Jawabanmu: <strong>${d.uTxt}</strong></p>
+                  <p class="text-xs text-brandGreen-800">Kunci Jawaban: <strong>${d.kTxt}</strong></p>
+                  <p class="text-xs text-brandBlue-900 mt-1 bg-white p-2 rounded-lg border"><i class="fa-solid fa-lightbulb text-amber-500 mr-1"></i><strong>Pembahasan:</strong> ${d.exp}</p>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function openCertificateModal(subtitle, desc) {
+      playSFX('win');
+      const modal = document.createElement('div');
+      modal.id = 'cert-modal';
+      modal.className = 'fixed inset-0 z-50 flex items-center justify-center bg-slate-900/75 backdrop-blur-sm p-4';
+      modal.innerHTML = `
+        <div class="bg-white rounded-3xl max-w-3xl w-full p-6 sm:p-10 border-8 border-double border-brandOrange-400 shadow-2xl text-center relative">
+          <button onclick="document.getElementById('cert-modal').remove()" class="no-print absolute top-4 right-4 w-9 h-9 rounded-full bg-slate-100 hover:bg-red-100 text-slate-600 flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
+          <div class="text-brandOrange-500 text-4xl mb-2"><i class="fa-solid fa-award"></i></div>
+          <h2 class="font-display font-extrabold text-2xl sm:text-4xl text-slate-900">SERTIFIKAT PENGHARGAAN</h2>
+          <p class="text-xs sm:text-sm font-extrabold text-brandGreen-700 uppercase tracking-widest mt-1">${subtitle}</p>
+          <p class="text-sm text-slate-600 mt-4">Diberikan kepada:</p>
+          <div class="my-3 py-2 border-b-2 border-brandOrange-300 max-w-md mx-auto">
+            <h3 class="font-display font-bold text-2xl sm:text-3xl text-brandOrange-700">${appState.studentName || 'Konsumen & Ekonom Cerdas'}</h3>
+          </div>
+          <p class="text-sm text-slate-700 max-w-xl mx-auto leading-relaxed">${desc}</p>
+          <div class="mt-8 flex justify-between items-end max-w-lg mx-auto text-xs text-slate-600">
+            <div class="text-left">
+              <p>Tanggal: <strong>${new Date().toLocaleDateString('id-ID')}</strong></p>
+              <p>Media: <strong>PASAR PINTAR</strong></p>
+            </div>
+            <div class="text-right">
+              <p>Guru Mata Pelajaran IPS,</p>
+              <p class="font-bold text-slate-900 mt-6 underline">Tria Nova Nadia, S.E.</p>
+              <p>UPTD SMP Negeri 2 Kalianda</p>
+            </div>
+          </div>
+          <div class="mt-6 no-print">
+            <button onclick="window.print()" class="btn-3d px-6 py-3 rounded-2xl bg-brandOrange-500 text-white font-bold text-sm"><i class="fa-solid fa-print mr-2"></i> Cetak / Simpan PDF</button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(modal);
+    }
+
+    /*************************************************************************
+     * 11. MENU 7: PROFIL PENGEMBANG
+     *************************************************************************/
+    function renderPengembang(container) {
+      currentNarrationText = "Profil Pengembang Media Pembelajaran Interaktif Pasar Pintar. Dikembangkan oleh Tria Nova Nadia, Sarjana Ekonomi, dari UPTD SMP Negeri 2 Kalianda untuk siswa SMP kelas tujuh Fase D.";
+      const photo = appState.devPhoto || '';
+
+      container.innerHTML = `
+        <div class="max-w-4xl mx-auto bg-white rounded-3xl overflow-hidden shadow-xl border-2 border-brandOrange-200">
+          <div class="bg-gradient-to-r from-brandOrange-500 via-amber-500 to-brandBlue-600 p-6 sm:p-8 text-white text-center">
+            <span class="px-3 py-1 rounded-full bg-brandYellow-300 text-slate-900 font-extrabold text-xs">IDENTITAS PENGEMBANG</span>
+            <h2 class="text-2xl sm:text-3xl font-display font-bold mt-2">PROFIL PENGEMBANG MPI PASAR PINTAR</h2>
+          </div>
+
+          <div class="p-6 sm:p-8 grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+            <div class="md:col-span-4 flex flex-col items-center text-center">
+              <div class="w-44 h-44 rounded-3xl bg-gradient-to-br from-brandOrange-100 to-brandYellow-100 border-4 border-brandOrange-400 shadow-lg overflow-hidden flex items-center justify-center">
+                ${photo ? `<img src="${photo}" class="w-full h-full object-cover" />` : `
+                  <svg viewBox="0 0 120 120" class="w-36 h-36">
+                    <circle cx="60" cy="45" r="24" fill="#fde68a" />
+                    <path d="M32,48 Q32,16 60,16 Q88,16 88,48 Q88,65 78,68 L42,68 Q32,65 32,48 Z" fill="#f97316" />
+                    <circle cx="52" cy="44" r="3" fill="#1e293b" />
+                    <circle cx="68" cy="44" r="3" fill="#1e293b" />
+                    <path d="M54,53 Q60,58 66,53" stroke="#1e293b" stroke-width="2.5" fill="none" stroke-linecap="round" />
+                    <path d="M24,112 Q24,74 60,74 Q96,74 96,112 Z" fill="#0284c7" />
+                  </svg>
+                `}
+              </div>
+              <label class="mt-3 cursor-pointer px-4 py-2 rounded-xl bg-brandOrange-100 hover:bg-brandOrange-200 text-brandOrange-800 font-bold text-xs transition">
+                <i class="fa-solid fa-camera mr-1"></i> Ganti Foto Pengembang
+                <input type="file" accept="image/*" onchange="uploadDevPhoto(event)" class="hidden" />
+              </label>
+            </div>
+
+            <div class="md:col-span-8 space-y-4">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+                <div class="p-3.5 rounded-2xl bg-brandOrange-50 border border-brandOrange-100">
+                  <span class="text-xs font-bold text-brandOrange-600 block">Nama Pengembang</span>
+                  <strong class="text-base text-slate-900">Tria Nova Nadia, S.E.</strong>
+                </div>
+                <div class="p-3.5 rounded-2xl bg-brandGreen-50 border border-brandGreen-100">
+                  <span class="text-xs font-bold text-brandGreen-600 block">Instansi / Sekolah</span>
+                  <strong class="text-base text-slate-900">UPTD SMP Negeri 2 Kalianda</strong>
+                </div>
+                <div class="p-3.5 rounded-2xl bg-brandBlue-50 border border-brandBlue-100">
+                  <span class="text-xs font-bold text-brandBlue-600 block">Mata Pelajaran & Sasaran</span>
+                  <strong class="text-sm text-slate-900">IPS • Siswa SMP Kelas VII Fase D</strong>
+                </div>
+                <div class="p-3.5 rounded-2xl bg-amber-50 border border-amber-100">
+                  <span class="text-xs font-bold text-amber-700 block">Nama Media & Materi</span>
+                  <strong class="text-sm text-slate-900">PASAR PINTAR • Harga dan Pasar</strong>
+                </div>
+              </div>
+
+              <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-sm space-y-2">
+                <h4 class="font-bold text-slate-900">Deskripsi & Tujuan Pengembangan Media:</h4>
+                <p class="text-slate-700 leading-relaxed">
+                  <strong>PASAR PINTAR</strong> adalah media pembelajaran interaktif berbasis web untuk mendukung pembelajaran IPS Kurikulum Merdeka Fase D. Media ini dirancang agar siswa mudah memahami konsep harga, pasar, hukum permintaan dan penawaran, serta mekanisme terbentuknya harga keseimbangan melalui simulasi kurva dan permainan edukasi.
+                </p>
+                <p class="text-slate-600 text-xs pt-1">
+                  <strong>Ucapan Terima Kasih:</strong> Terima kasih kepada keluarga besar UPTD SMP Negeri 2 Kalianda, rekan guru IPS, serta seluruh peserta didik kelas VII yang telah menginspirasi hadirnya media pembelajaran ini.
+                </p>
+              </div>
+
+              <div class="p-3.5 rounded-2xl bg-brandYellow-300 text-slate-900 font-display font-bold text-center text-sm sm:text-base">
+                "Belajar Ekonomi, Mengenal Pasar, Menjadi Konsumen Cerdas!"
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function uploadDevPhoto(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        appState.devPhoto = e.target.result;
+        saveState();
+        renderPengembang(document.getElementById('app-content'));
+        showToast('Foto pengembang berhasil diganti!', 'success');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    /*************************************************************************
+     * 12. INISIALISASI SAAT HALAMAN DIMUAT
+     *************************************************************************/
+    window.addEventListener('DOMContentLoaded', () => {
+      loadState();
+      updateProgressUI();
+      if ('speechSynthesis' in window) window.speechSynthesis.getVoices();
+      setTimeout(() => {
+        const loader = document.getElementById('loading-screen');
+        if (loader) {
+          loader.style.opacity = '0';
+          setTimeout(() => loader.remove(), 500);
+        }
+      }, 750);
+    });
+  </script>
+</body>
+</html>
